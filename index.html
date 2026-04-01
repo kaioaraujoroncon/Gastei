@@ -245,6 +245,11 @@ select.setting-input{text-align:left;cursor:pointer;}
 .pin-btn:active{background:var(--accent);}
 #pin-overlay{display:none;}
 #pin-overlay.visible{display:flex!important;}
+
+/* ===== UNDO TOAST ===== */
+#undo-toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:#1E2530;color:var(--text);font-size:13px;font-weight:600;padding:12px 16px;border-radius:10px;display:flex;align-items:center;gap:12px;box-shadow:0 4px 20px rgba(0,0,0,0.5);z-index:500;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;white-space:nowrap;}
+#undo-toast.visible{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:all;}
+#undo-toast button{background:var(--accent);color:white;border:none;border-radius:6px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;}
 </style>
 </head>
 <body>
@@ -735,6 +740,10 @@ select.setting-input{text-align:left;cursor:pointer;}
     </div>
   </div>
 </div>
+<div id="undo-toast">
+  <span id="undo-toast-msg">Lançamento removido</span>
+  <button onclick="undoDelete()">Desfazer</button>
+</div>
 <script>
 // ===== CONSTANTS & STATE =====
 const KEY='gastei_v4',CFG_KEY='gastei_cfg_v2',RECUR_KEY='gastei_recur_v1',CONTAS_KEY='gastei_contas_v1',CATS_KEY='gastei_cats_v1',PAGTO_KEY='gastei_pagto_v1',AVULSO_KEY='gastei_avulso_v1',SAZONAL_KEY='gastei_sazonal_v1';
@@ -949,6 +958,40 @@ function saveContasData(){localStorage.setItem(CONTAS_KEY,JSON.stringify(contas)
 
 
 // ===== SWIPE TO ACTION =====
+
+// ===== UNDO DELETE =====
+let _deletedExpense=null, _undoTimer=null;
+
+function deleteExpense(id){
+  const idx=expenses.findIndex(e=>e.id===id);
+  if(idx===-1)return;
+  _deletedExpense={expense:expenses[idx], index:idx};
+  expenses.splice(idx,1);
+  save();renderAll();renderFuturo();
+  showUndoToast(_deletedExpense.expense.desc);
+}
+
+function showUndoToast(desc){
+  clearTimeout(_undoTimer);
+  const toast=document.getElementById('undo-toast');
+  const msg=document.getElementById('undo-toast-msg');
+  msg.textContent=`"${desc.length>22?desc.slice(0,22)+'…':desc}" removido`;
+  toast.classList.add('visible');
+  _undoTimer=setTimeout(()=>{
+    toast.classList.remove('visible');
+    _deletedExpense=null;
+  },4000);
+}
+
+function undoDelete(){
+  if(!_deletedExpense)return;
+  clearTimeout(_undoTimer);
+  expenses.splice(_deletedExpense.index,0,_deletedExpense.expense);
+  save();renderAll();renderFuturo();
+  _deletedExpense=null;
+  document.getElementById('undo-toast').classList.remove('visible');
+}
+
 function initSwipe(el, onSwipeLeft, onSwipeRight){
   let startX=0, currentX=0, swiping=false;
   const THRESHOLD=80;
@@ -996,7 +1039,7 @@ function attachSwipes(){
     const e=expenses.find(x=>x.id===id);
     if(!e)return;
     initSwipe(el,
-      ()=>deleteExpense(id), // swipe left = delete
+      ()=>deleteExpense(id), // swipe left = delete (with undo toast)
       ()=>{ // swipe right = confirm if vencido/pendente, else ignore
         if(e.status==='vencido'||e.status==='pendente'){
           confirmarPagamento(id);
