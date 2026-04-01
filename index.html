@@ -247,9 +247,9 @@ select.setting-input{text-align:left;cursor:pointer;}
 #pin-overlay.visible{display:flex!important;}
 
 /* ===== UNDO TOAST ===== */
-#undo-toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:#1E2530;color:var(--text);font-size:13px;font-weight:600;padding:12px 16px;border-radius:10px;display:flex;align-items:center;gap:12px;box-shadow:0 4px 20px rgba(0,0,0,0.5);z-index:500;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;white-space:nowrap;}
-#undo-toast.visible{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:all;}
-#undo-toast button{background:var(--accent);color:white;border:none;border-radius:6px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;}
+#undo-toast{position:fixed;bottom:110px;left:16px;right:16px;transform:translateY(20px);background:#2A3142;color:var(--text);font-size:14px;font-weight:600;padding:14px 16px;border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,0.6);z-index:9000;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;}
+#undo-toast.visible{opacity:1;transform:translateY(0);pointer-events:all;}
+#undo-toast button{background:var(--accent);color:white;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0;}
 </style>
 </head>
 <body>
@@ -914,9 +914,12 @@ function confirmarPagamento(id){
   save();
   renderAll();
   renderFuturo();
-  // Undo support
-  _confirmedExpense={id, prevStatus};
-  showUndoConfirmToast(e.desc);
+  // Show toast after render
+  const _desc=e.desc;
+  requestAnimationFrame(()=>{
+    _confirmedExpense={id, prevStatus};
+    showUndoConfirmToast(_desc);
+  });
 }
 
 function showUndoConfirmToast(desc){
@@ -994,15 +997,16 @@ let _deletedExpense=null, _undoTimer=null;
 function deleteExpense(id){
   const idx=expenses.findIndex(e=>e.id===id);
   if(idx===-1)return;
-  // Capture BEFORE splice so undo can restore
   const captured={expense:{...expenses[idx]}, index:idx};
   expenses.splice(idx,1);
   save();
   renderAll();
   renderFuturo();
-  // Set AFTER render so it's not lost
-  _deletedExpense=captured;
-  showUndoToast(captured.expense.desc);
+  // Show toast after render using rAF so it's not swallowed by reflow
+  requestAnimationFrame(()=>{
+    _deletedExpense=captured;
+    showUndoToast(captured.expense.desc);
+  });
 }
 
 function showUndoToast(desc){
@@ -1029,61 +1033,66 @@ function undoDelete(){
 }
 
 function initSwipe(el, onSwipeLeft, onSwipeRight){
-  let startX=0, startY=0, currentX=0, swiping=false, locked=false;
-  const THRESHOLD=72, ANGLE_LOCK=30; // degrees
+  let startX=0, startY=0, currentX=0;
+  let direction=null; // null | 'h' | 'v'
+  const THRESHOLD=70, MIN_LOCK=8;
 
-  el.addEventListener('touchstart',e=>{
-    startX=e.touches[0].clientX;
-    startY=e.touches[0].clientY;
-    currentX=0;
-    swiping=false;
-    locked=false;
+  function onStart(e){
+    const t=e.touches[0];
+    startX=t.clientX; startY=t.clientY;
+    currentX=0; direction=null;
     el.style.transition='';
-  },{passive:true});
+  }
 
-  el.addEventListener('touchmove',e=>{
-    const dx=e.touches[0].clientX-startX;
-    const dy=e.touches[0].clientY-startY;
+  function onMove(e){
+    const t=e.touches[0];
+    const dx=t.clientX-startX;
+    const dy=t.clientY-startY;
+    const adx=Math.abs(dx), ady=Math.abs(dy);
 
-    // First move: decide if horizontal or vertical
-    if(!locked){
-      const angle=Math.abs(Math.atan2(dy,dx)*180/Math.PI);
-      const isHorizontal=angle<ANGLE_LOCK||angle>180-ANGLE_LOCK;
-      locked=true;
-      swiping=isHorizontal;
+    // Wait until moved enough to determine direction
+    if(direction===null){
+      if(adx<MIN_LOCK&&ady<MIN_LOCK)return;
+      direction=adx>=ady?'h':'v';
     }
 
-    if(!swiping)return;
-    e.preventDefault(); // block scroll only when swiping horizontally
+    if(direction==='v')return; // let scroll happen naturally
+
+    // Horizontal swipe — block scroll
+    e.preventDefault();
     currentX=Math.max(-THRESHOLD*1.5, Math.min(THRESHOLD*1.5, dx));
     el.style.transform=`translateX(${currentX}px)`;
-  },{passive:false}); // non-passive so preventDefault works
+  }
 
-  el.addEventListener('touchend',()=>{
-    if(!swiping){el.style.transform='';return;}
-    swiping=false;
+  function onEnd(){
+    if(direction!=='h'){
+      el.style.transform='';
+      return;
+    }
     if(currentX<-THRESHOLD){
+      // Swipe left
       el.style.transition='transform .18s ease,opacity .18s ease';
       el.style.transform='translateX(-110%)';
       el.style.opacity='0';
-      setTimeout(()=>onSwipeLeft&&onSwipeLeft(),180);
-    } else if(currentX>THRESHOLD){
-      if(onSwipeRight){
-        el.style.transition='transform .18s ease,opacity .18s ease';
-        el.style.transform='translateX(110%)';
-        el.style.opacity='0';
-        setTimeout(()=>onSwipeRight(),180);
-      } else {
-        // No action — snap back
-        el.style.transition='transform .15s ease';
-        el.style.transform='';
-      }
+      setTimeout(()=>{ if(onSwipeLeft)onSwipeLeft(); },180);
+    } else if(currentX>THRESHOLD&&onSwipeRight){
+      // Swipe right (only if handler exists)
+      el.style.transition='transform .18s ease,opacity .18s ease';
+      el.style.transform='translateX(110%)';
+      el.style.opacity='0';
+      setTimeout(()=>onSwipeRight(),180);
     } else {
+      // Snap back
       el.style.transition='transform .15s ease';
       el.style.transform='';
     }
-    currentX=0;
-  });
+    currentX=0; direction=null;
+  }
+
+  el.addEventListener('touchstart', onStart, {passive:true});
+  el.addEventListener('touchmove',  onMove,  {passive:false});
+  el.addEventListener('touchend',   onEnd,   {passive:true});
+  el.addEventListener('touchcancel',onEnd,   {passive:true});
 }
 
 function attachSwipes(){
