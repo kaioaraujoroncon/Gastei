@@ -10,7 +10,7 @@
 <title>Gastou, Kaio?</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--accent:#1a3a6b;--accent-bright:#2952a3;--accent-dark:#0f2444;--accent-text:#FFFFFF;--red:#F6465D;--green-val:#0ECB81;--orange:#FBBF24;--purple:#8B5CF6;--bg:#050508;--bg2:#0c0c12;--surface:#111118;--surface2:#16161f;--border:rgba(255,255,255,0.06);--text:#E8EAF0;--text2:#7a8499;--text3:#3d4558;--radius:14px;--radius-sm:10px;--shadow:0 4px 24px rgba(0,0,0,0.7);}
+:root{--accent:#1a3a6b;--accent-bright:#1a3a6b;--accent-dark:#0f2444;--accent-text:#FFFFFF;--red:#F6465D;--green-val:#0ECB81;--orange:#FBBF24;--purple:#8B5CF6;--bg:#050508;--bg2:#0c0c12;--surface:#111118;--surface2:#16161f;--border:rgba(255,255,255,0.06);--text:#E8EAF0;--text2:#7a8499;--text3:#3d4558;--radius:14px;--radius-sm:10px;--shadow:0 4px 24px rgba(0,0,0,0.7);}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{width:100%;overflow-x:hidden;}body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-top:0;}
 #app{width:100%;max-width:100vw;margin:0;padding-bottom:90px;}
@@ -58,7 +58,7 @@ textarea::placeholder{color:var(--text3);font-size:13px;}
 .filters{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:4px;}
 .filters::-webkit-scrollbar{display:none;}
 .pill{font-size:12px;padding:7px 16px;border-radius:20px;background:var(--surface2);color:var(--text2);cursor:pointer;white-space:nowrap;font-family:inherit;font-weight:500;border:1px solid var(--border);}
-.pill.active{background:rgba(41,82,163,0.25);color:#4a7fd4;border-color:rgba(74,127,212,0.4);}
+.pill.active{background:rgba(26,58,107,0.25);color:#4a7fd4;border-color:rgba(74,127,212,0.4);}
 .list{display:flex;flex-direction:column;gap:8px;}
 .item{background:var(--surface);border-radius:var(--radius);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;box-shadow:var(--shadow);border:1px solid var(--border);}
 .item.pendente{opacity:.75;border-left:3px solid var(--orange);}
@@ -154,6 +154,8 @@ select.setting-input{text-align:left;cursor:pointer;}
 .btn-saida{flex:1;background:#9b2335;color:#fff;font-size:14px;font-weight:700;border:none;border-radius:0 0 var(--radius) 0;padding:11px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;transition:background .15s;}
 .btn-saida:active{background:#c73348;}
 .privacy-hide{filter:blur(8px);user-select:none;pointer-events:none;transition:filter .2s;}
+#quick-cats::-webkit-scrollbar{display:none;}
+#quick-cats{-ms-overflow-style:none;scrollbar-width:none;}
 @keyframes pulse-mic{0%,100%{box-shadow:0 0 0 0 rgba(246,70,93,0.5);}50%{box-shadow:0 0 0 8px rgba(246,70,93,0);}}
 
 /* ===== FUTURO TAB STYLES ===== */
@@ -210,11 +212,11 @@ select.setting-input{text-align:left;cursor:pointer;}
 .saz-name{font-size:15px;font-weight:700;}
 .saz-sub{font-size:11px;color:var(--text3);margin-top:2px;}
 .saz-bar{height:6px;background:var(--bg2);border-radius:3px;overflow:hidden;margin:8px 0;}
-.saz-bar-fill{height:100%;border-radius:3px;background:#2952a3;transition:width .4s;}
+.saz-bar-fill{height:100%;border-radius:3px;background:#1a3a6b;transition:width .4s;}
 .saz-bar-fill.done{background:var(--green-val);}
 .saz-vals{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);}
-.saz-pill{font-size:10px;padding:2px 8px;border-radius:6px;font-weight:700;background:rgba(41,82,163,0.2);color:#4a7fd4;}
-.btn-contribuir{font-size:11px;font-weight:700;background:rgba(41,82,163,0.2);color:#4a7fd4;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-family:inherit;}
+.saz-pill{font-size:10px;padding:2px 8px;border-radius:6px;font-weight:700;background:rgba(26,58,107,0.2);color:#4a7fd4;}
+.btn-contribuir{font-size:11px;font-weight:700;background:rgba(26,58,107,0.2);color:#4a7fd4;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-family:inherit;}
 .btn-contribuir:active{background:rgba(139,92,246,0.4);}
 
 /* ===== FATURA CARD ===== */
@@ -391,9 +393,9 @@ select.setting-input{text-align:left;cursor:pointer;}
     </div>
 
     <!-- LANÇAMENTO RÁPIDO -->
-    <div style="padding:0;margin-bottom:12px">
-      <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px">Lançamento rápido</div>
-      <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none" id="quick-cats"></div>
+    <div style="padding:0;margin-bottom:12px;margin-top:20px;overflow:visible">
+      <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px;margin-top:0">Lançamento rápido</div>
+      <div style="display:flex;gap:8px;overflow-x:scroll;padding:2px 2px 6px 2px;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-padding-left:2px" id="quick-cats"></div>
     </div>
 
     <!-- FATURAS DE CARTÃO -->
@@ -945,7 +947,7 @@ select.setting-input{text-align:left;cursor:pointer;}
 const KEY='gastei_v4',CFG_KEY='gastei_cfg_v2',RECUR_KEY='gastei_recur_v1',CONTAS_KEY='gastei_contas_v1',CATS_KEY='gastei_cats_v1',PAGTO_KEY='gastei_pagto_v1',AVULSO_KEY='gastei_avulso_v1',SAZONAL_KEY='gastei_sazonal_v1',FAT_HIST_KEY='gastei_fat_hist_v1';
 const DEFAULT_PAGTOS=['Pix','Dinheiro','Débito','Crédito'];
 const DEFAULT_CATS=['Alimentação','Transporte','Mercado','Saúde','Lazer','Moradia','Roupas','Educação','Presentes','Outros'];
-const PIE_COLORS=['#1240A8','#0ECB81','#F6465D','#FBBF24','#8B5CF6','#06B6D4','#F97316','#EC4899','#84CC16','#A78BFA'];
+const PIE_COLORS=['#1a3a6b','#0ECB81','#F6465D','#FBBF24','#8B5CF6','#06B6D4','#F97316','#EC4899','#84CC16','#A78BFA'];
 const CATS_RULES=[
   ['Transporte',['uber','99','taxi','táxi','ônibus','metro','gasolina','combustivel','estacionamento','pedágio','passagem','trem','moto']],
   ['Alimentação',['almoço','almoco','jantar','café','lanche','pizza','restaurante','ifood','delivery','hamburger','padaria','sushi','churrasco','bar','cerveja','bebida','comida','sorvete','refeição']],
@@ -1339,8 +1341,8 @@ function renderQuickCats(){
     {icon:'🎁',cat:'Presentes'},
     {icon:'💰',cat:'Investimentos'},
   ];
-  el.innerHTML=QUICK.map(q=>`
-    <button onclick="openQuickLanc('${q.cat}')" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px 10px;cursor:pointer;font-family:inherit;flex-shrink:0;min-width:56px">
+  el.innerHTML=QUICK.map((q,i)=>`
+    <button onclick="openQuickLanc('${q.cat}')" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px 10px;cursor:pointer;font-family:inherit;flex-shrink:0;min-width:56px;${i===0?'margin-left:2px':''}${i===QUICK.length-1?'margin-right:8px':''}">
       <span style="font-size:20px;line-height:1">${q.icon}</span>
       <span style="font-size:10px;font-weight:600;color:var(--text2);white-space:nowrap">${q.cat}</span>
     </button>`).join('');
@@ -1804,7 +1806,7 @@ function getMonthExp(mo,yr){
 // ===== ITEM HTML =====
 function itemHTML(e){
   const cats=allCats(),catIdx=cats.indexOf(e.categoria),color=PIE_COLORS[catIdx%PIE_COLORS.length]||PIE_COLORS[0];
-  const contaIdx=contas.indexOf(e.conta),contaBg=contaIdx===0?'rgba(18,64,168,0.2)':contaIdx===1?'rgba(14,203,129,0.15)':'rgba(100,100,100,0.2)',contaTc=contaIdx===0?'#60A5FA':contaIdx===1?'#34D399':'#9CA3AF';
+  const contaIdx=contas.indexOf(e.conta),contaBg=contaIdx===0?'rgba(26,58,107,0.2)':contaIdx===1?'rgba(14,203,129,0.15)':'rgba(100,100,100,0.2)',contaTc=contaIdx===0?'#60A5FA':contaIdx===1?'#34D399':'#9CA3AF';
   const isEntrada=e.tipo==='entrada';
   const isPendente=e.status==='pendente';
   const isVencido=e.status==='vencido';
@@ -3092,7 +3094,7 @@ function deletePagto(id){
   populatePagtoSelects();renderPagtos();
 }
 const TIPO_LABEL={credito:'Crédito',debito:'Débito',pix:'Pix',dinheiro:'Dinheiro',boleto:'Boleto',outro:'Outro'};
-const TIPO_COLOR={credito:'#1240A8',debito:'#0ECB81',pix:'#8B5CF6',dinheiro:'#FBBF24',boleto:'#F97316',outro:'#848E9C'};
+const TIPO_COLOR={credito:'#1a3a6b',debito:'#0ECB81',pix:'#8B5CF6',dinheiro:'#FBBF24',boleto:'#F97316',outro:'#848E9C'};
 function renderPagtos(){
   const el=document.getElementById('pagtos-list');
   const defHtml=DEFAULT_PAGTOS.map(p=>`<div class="recur-item" style="margin-bottom:6px"><div style="flex:1"><div class="recur-name">${p}</div><div class="recur-meta">Padrão</div></div></div>`).join('');
