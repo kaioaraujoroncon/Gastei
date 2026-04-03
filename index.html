@@ -10,13 +10,13 @@
 <title>Gastou, Kaio?</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--accent:#1a3a6b;--accent-bright:#1a3a6b;--accent-dark:#0f2444;--accent-text:#FFFFFF;--red:#F6465D;--green-val:#0ECB81;--orange:#FBBF24;--purple:#8B5CF6;--bg:#050508;--bg2:#0c0c12;--surface:#111118;--surface2:#16161f;--border:rgba(255,255,255,0.06);--text:#E8EAF0;--text2:#7a8499;--text3:#3d4558;--radius:14px;--radius-sm:10px;--shadow:0 4px 24px rgba(0,0,0,0.7);}
+:root{--accent:#3461c1;--accent-bright:#1a3a6b;--accent-dark:#2d5fa3;--accent-text:#FFFFFF;--red:#F6465D;--green-val:#0ECB81;--orange:#FBBF24;--purple:#8B5CF6;--bg:#050508;--bg2:#0c0c12;--surface:#111118;--surface2:#16161f;--border:rgba(255,255,255,0.06);--text:#E8EAF0;--text2:#7a8499;--text3:#3d4558;--radius:14px;--radius-sm:10px;--shadow:0 4px 24px rgba(0,0,0,0.7);}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{width:100%;overflow-x:hidden;}body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-top:0;}
 #app{width:100%;max-width:100vw;margin:0;padding-bottom:90px;}
 .nav{display:flex;background:rgba(10,10,16,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);position:fixed;bottom:0;left:0;right:0;z-index:100;width:100%;padding-bottom:env(safe-area-inset-bottom);}
 .nav-btn{flex:1;padding:12px 2px;font-size:9px;font-weight:600;color:var(--text3);background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-family:inherit;transition:color .15s;}
-.nav-btn.active{color:#4a7fd4;}
+.nav-btn.active{color:#3461c1;}
 .nav-btn svg{width:22px;height:22px;}
 .page{display:none;padding:0 8px;}
 .page.active{display:block;}
@@ -30,8 +30,8 @@ textarea::placeholder{color:var(--text3);font-size:13px;}
 .input-row{display:flex;gap:8px;margin-top:10px;}
 .btn-primary{flex:1;background:var(--accent);color:var(--accent-text);font-size:15px;font-weight:700;border:none;border-radius:var(--radius-sm);padding:14px;cursor:pointer;font-family:inherit;transition:background .15s;}
 .btn-primary:active{background:var(--accent-dark);}
-.status{font-size:13px;min-height:0;margin:0;padding:0;color:var(--green-val);text-align:center;font-weight:600;transition:all .2s;}
-.status.err{color:var(--red);}.status:not(:empty){padding:6px 0;min-height:20px;}
+.status{font-size:12px;min-height:0;margin:0;padding:0;color:var(--green-val);text-align:center;font-weight:600;transition:opacity .3s;position:absolute;bottom:-22px;left:0;right:0;}
+.status.err{color:var(--red);}
 .examples{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
 .ex{font-size:11px;background:var(--bg2);border-radius:20px;padding:5px 12px;cursor:pointer;color:var(--text2);font-weight:500;}
 .cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
@@ -58,7 +58,7 @@ textarea::placeholder{color:var(--text3);font-size:13px;}
 .filters{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:4px;}
 .filters::-webkit-scrollbar{display:none;}
 .pill{font-size:12px;padding:7px 16px;border-radius:20px;background:var(--surface2);color:var(--text2);cursor:pointer;white-space:nowrap;font-family:inherit;font-weight:500;border:1px solid var(--border);}
-.pill.active{background:rgba(26,58,107,0.25);color:#4a7fd4;border-color:rgba(74,127,212,0.4);}
+.pill.active{background:rgba(26,58,107,0.25);color:#3461c1;border-color:rgba(52,97,193,0.4);}
 .list{display:flex;flex-direction:column;gap:8px;}
 .item{background:var(--surface);border-radius:var(--radius);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;box-shadow:var(--shadow);border:1px solid var(--border);}
 .item.pendente{opacity:.75;border-left:3px solid var(--orange);}
@@ -80,7 +80,7 @@ textarea::placeholder{color:var(--text3);font-size:13px;}
 .icon-btn.del:hover{border-color:var(--red);}
 .icon-btn.del:hover svg{color:var(--red);}
 .badge{font-size:10px;padding:2px 7px;border-radius:6px;font-weight:600;}
-.badge-parcela{font-size:10px;padding:2px 7px;border-radius:6px;font-weight:700;background:rgba(74,127,212,0.15);color:#4a7fd4;}
+.badge-parcela{font-size:10px;padding:2px 7px;border-radius:6px;font-weight:700;background:rgba(52,97,193,0.15);color:#3461c1;}
 .badge-pendente{font-size:10px;padding:2px 7px;border-radius:6px;font-weight:700;background:rgba(139,92,246,0.15);color:#A78BFA;}
 .empty{text-align:center;color:var(--text3);font-size:14px;padding:32px 0;}
 .chart-wrap{background:var(--surface);border-radius:var(--radius);padding:16px;margin-bottom:16px;box-shadow:var(--shadow);border:1px solid var(--border);}
@@ -115,7 +115,7 @@ select.setting-input{text-align:left;cursor:pointer;}
 .modal-field input:focus,.modal-field select:focus{border-color:var(--accent);}
 .modal-actions{display:flex;gap:10px;margin-top:16px;}
 .btn-cancel{flex:1;background:var(--bg2);color:var(--text2);font-size:15px;font-weight:600;border-radius:var(--radius-sm);padding:13px;cursor:pointer;font-family:inherit;}
-.btn-save{flex:2;background:#1a3a6b;color:white;font-size:15px;font-weight:700;border:none;border-radius:var(--radius-sm);padding:13px;cursor:pointer;font-family:inherit;}
+.btn-save{flex:2;background:#3461c1;color:white;font-size:15px;font-weight:700;border:none;border-radius:var(--radius-sm);padding:13px;cursor:pointer;font-family:inherit;}
 .recur-item{background:var(--surface);border-radius:var(--radius);padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;box-shadow:var(--shadow);}
 .recur-name{font-size:14px;font-weight:600;}
 .recur-meta{font-size:11px;color:var(--text3);margin-top:2px;}
@@ -145,7 +145,7 @@ select.setting-input{text-align:left;cursor:pointer;}
 .comp-header{display:flex;justify-content:space-between;font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;padding-bottom:8px;margin-bottom:2px;}
 .pagto-badge{font-size:10px;padding:2px 7px;border-radius:6px;font-weight:600;background:rgba(251,191,36,0.15);color:#FBBF24;}
 .conta-slide-card{flex-shrink:0;background:var(--surface);border-radius:var(--radius);padding:10px 14px;cursor:pointer;transition:border-color .15s,background .15s;min-width:120px;border:1px solid var(--border);}
-.conta-slide-card.active{border-color:rgba(74,127,212,0.5);background:rgba(26,58,107,0.2);}
+.conta-slide-card.active{border-color:#3461c1;background:rgba(52,97,193,0.15);}
 .conta-slide-card .cs-lbl{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
 .conta-slide-card .cs-val{font-size:16px;font-weight:800;color:var(--red);letter-spacing:-.3px;}
 .conta-slide-card.active .cs-lbl{color:var(--accent);}
@@ -159,10 +159,10 @@ select.setting-input{text-align:left;cursor:pointer;}
 @keyframes pulse-mic{0%,100%{box-shadow:0 0 0 0 rgba(246,70,93,0.5);}50%{box-shadow:0 0 0 8px rgba(246,70,93,0);}}
 
 /* ===== FUTURO TAB STYLES ===== */
-.futuro-hero{background:linear-gradient(135deg,rgba(15,36,68,0.8),rgba(26,58,107,0.6));border:1px solid rgba(74,127,212,0.2);border-radius:18px;padding:18px;margin-bottom:16px;}
+.futuro-hero{background:linear-gradient(135deg,rgba(15,36,68,0.8),rgba(26,58,107,0.6));border:1px solid rgba(52,97,193,0.2);border-radius:18px;padding:18px;margin-bottom:16px;}
 .futuro-hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
-.futuro-hero-title{font-size:11px;font-weight:700;color:rgba(74,127,212,0.8);text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px;}
-.futuro-hero-val{font-size:28px;font-weight:800;color:#4a7fd4;letter-spacing:-1px;}
+.futuro-hero-title{font-size:11px;font-weight:700;color:rgba(52,97,193,0.8);text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px;}
+.futuro-hero-val{font-size:28px;font-weight:800;color:#3461c1;letter-spacing:-1px;}
 .futuro-hero-sub{font-size:12px;color:var(--text2);margin-top:2px;}
 .futuro-months{display:flex;flex-direction:column;gap:10px;}
 .futuro-month-card{background:var(--surface);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border);}
@@ -212,11 +212,11 @@ select.setting-input{text-align:left;cursor:pointer;}
 .saz-name{font-size:15px;font-weight:700;}
 .saz-sub{font-size:11px;color:var(--text3);margin-top:2px;}
 .saz-bar{height:6px;background:var(--bg2);border-radius:3px;overflow:hidden;margin:8px 0;}
-.saz-bar-fill{height:100%;border-radius:3px;background:#1a3a6b;transition:width .4s;}
+.saz-bar-fill{height:100%;border-radius:3px;background:#3461c1;transition:width .4s;}
 .saz-bar-fill.done{background:var(--green-val);}
 .saz-vals{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);}
-.saz-pill{font-size:10px;padding:2px 8px;border-radius:6px;font-weight:700;background:rgba(26,58,107,0.2);color:#4a7fd4;}
-.btn-contribuir{font-size:11px;font-weight:700;background:rgba(26,58,107,0.2);color:#4a7fd4;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-family:inherit;}
+.saz-pill{font-size:10px;padding:2px 8px;border-radius:6px;font-weight:700;background:rgba(52,97,193,0.15);color:#3461c1;}
+.btn-contribuir{font-size:11px;font-weight:700;background:rgba(52,97,193,0.15);color:#3461c1;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-family:inherit;}
 .btn-contribuir:active{background:rgba(139,92,246,0.4);}
 
 /* ===== FATURA CARD ===== */
@@ -249,7 +249,7 @@ select.setting-input{text-align:left;cursor:pointer;}
 #pin-overlay.visible{display:flex!important;}
 
 /* ===== UNDO TOAST ===== */
-#undo-toast{position:fixed;bottom:110px;left:16px;right:16px;transform:translateY(20px);background:#0e1420;color:var(--text);font-size:14px;font-weight:600;padding:14px 16px;border-radius:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,0.8);z-index:9000;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;border:1px solid rgba(74,127,212,0.3);}
+#undo-toast{position:fixed;bottom:110px;left:16px;right:16px;transform:translateY(20px);background:#0e1420;color:var(--text);font-size:14px;font-weight:600;padding:14px 16px;border-radius:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,0.8);z-index:9000;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;border:1px solid rgba(52,97,193,0.3);}
 #undo-toast.visible{opacity:1;transform:translateY(0);pointer-events:all;}
 #undo-toast button{background:var(--accent);color:white;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0;}
 </style>
@@ -288,8 +288,8 @@ select.setting-input{text-align:left;cursor:pointer;}
     <div style="display:flex;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top) + 12px) 8px 8px;position:sticky;top:0;background:var(--bg);z-index:10">
       <!-- Logo esquerda -->
       <div style="display:flex;align-items:center;gap:8px">
-        <div style="width:34px;height:34px;border-radius:10px;background:#1a3a6b;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        <div style="width:34px;height:34px;border-radius:10px;background:#3461c1;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <span style="font-size:18px;font-weight:800;color:white;font-family:'IBM Plex Sans',sans-serif;line-height:1">G</span>
         </div>
         <div>
           <div style="font-size:16px;font-weight:700;color:var(--text);white-space:nowrap;line-height:1.2">Gastou, Kaio?</div>
@@ -299,7 +299,7 @@ select.setting-input{text-align:left;cursor:pointer;}
       <!-- Direita: conta + olhinho -->
       <div style="display:flex;align-items:center;gap:8px">
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:6px">
-          <div style="width:8px;height:8px;border-radius:50%;background:#1a3a6b;border:2px solid #4a7fd4"></div>
+          <div style="width:8px;height:8px;border-radius:50%;background:#3461c1;border:none"></div>
           <span id="h-conta-ativa">Pessoal</span>
         </div>
         <button onclick="togglePrivacy()" id="privacy-btn" style="width:34px;height:34px;background:var(--surface);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0">
@@ -312,8 +312,8 @@ select.setting-input{text-align:left;cursor:pointer;}
     <div style="padding:0;margin-bottom:10px">
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
-          <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.12em">Ritmo de gastos</div>
-          <button onclick="showPage('lancamentos')" style="font-size:12px;color:#4a7fd4;font-weight:600;background:none;border:none;cursor:pointer;font-family:inherit">ver todas ↗</button>
+          <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.12em">Saldo</div>
+          <button onclick="showPage('lancamentos')" style="font-size:12px;color:#3461c1;font-weight:600;background:none;border:none;cursor:pointer;font-family:inherit">ver todas ↗</button>
         </div>
         <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px">
           <div style="font-size:26px;font-weight:800;letter-spacing:-1px;color:var(--text)" id="h-mes">R$ 0</div>
@@ -338,30 +338,30 @@ select.setting-input{text-align:left;cursor:pointer;}
     <!-- GRID 2x2 resumo -->
     <div style="padding:0;margin-bottom:12px">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px">
-          <div style="display:flex;align-items:center;gap:5px;margin-bottom:6px">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;min-height:80px;display:flex;flex-direction:column;justify-content:space-between">
+          <div style="display:flex;align-items:center;gap:5px">
             <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="var(--text3)" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"/></svg>
             <span style="font-size:10px;color:var(--text3);font-weight:600">Total lançamentos</span>
           </div>
           <div style="font-size:20px;font-weight:800;color:var(--text)" id="h-total-count">0</div>
         </div>
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#F6465D" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"/></svg>
-            <span style="font-size:11px;color:var(--text3);font-weight:600">Despesas</span>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;min-height:80px;display:flex;flex-direction:column;justify-content:space-between">
+          <div style="display:flex;align-items:center;gap:5px">
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="#F6465D" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"/></svg>
+            <span style="font-size:10px;color:var(--text3);font-weight:600">Despesas</span>
           </div>
-          <div style="font-size:20px;font-weight:800;color:#F6465D" id="h-despesas-val">R$ 0</div>
+          <div style="font-size:18px;font-weight:800;color:#F6465D" id="h-despesas-val">R$ 0</div>
         </div>
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px">
-          <div style="display:flex;align-items:center;gap:5px;margin-bottom:6px">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;min-height:80px;display:flex;flex-direction:column;justify-content:space-between">
+          <div style="display:flex;align-items:center;gap:5px">
             <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="#0ECB81" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
             <span style="font-size:10px;color:var(--text3);font-weight:600">Receitas</span>
           </div>
           <div style="font-size:18px;font-weight:800;color:#0ECB81" id="h-entradas">R$ 0</div>
         </div>
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px">
-          <div style="display:flex;align-items:center;gap:5px;margin-bottom:6px">
-            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="#4a7fd4" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;min-height:80px;display:flex;flex-direction:column;justify-content:space-between">
+          <div style="display:flex;align-items:center;gap:5px">
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="#3461c1" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
             <span style="font-size:10px;color:var(--text3);font-weight:600">Saldo</span>
           </div>
           <div style="font-size:18px;font-weight:800" id="h-saldo">R$ 0</div>
@@ -370,11 +370,11 @@ select.setting-input{text-align:left;cursor:pointer;}
     </div>
 
     <!-- INPUT CARD -->
-    <div style="padding:0;margin-bottom:12px">
+    <div style="padding:0;margin-bottom:12px;position:relative">
       <div class="input-card" style="margin-bottom:0">
         <div style="position:relative;padding:0 12px">
-          <textarea id="msg" rows="2" placeholder="Ex: Frango 62,70 · Uber 2,56 · Relógio 10x de 4k" style="padding-right:48px"></textarea>
-          <button id="mic-btn" onclick="toggleVoice()" style="position:absolute;right:20px;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;background:#1a3a6b;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;">
+          <textarea id="msg" rows="2" placeholder="Ex: Investimentos R$12.000, Viagem 3x de R$1600, Mercado R$200,00..." style="padding-right:48px"></textarea>
+          <button id="mic-btn" onclick="toggleVoice()" style="position:absolute;right:20px;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;background:#3461c1;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;">
             <svg id="mic-icon" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
           </button>
         </div>
@@ -500,7 +500,7 @@ select.setting-input{text-align:left;cursor:pointer;}
     </div>
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px">
       <div style="font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;display:flex;align-items:center;gap:4px">
-        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="#4a7fd4" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>Saldo
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="#3461c1" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>Saldo
       </div>
       <div style="font-size:18px;font-weight:800" id="tl-saldo">R$ 0</div>
     </div>
@@ -849,8 +849,8 @@ select.setting-input{text-align:left;cursor:pointer;}
 </div>
 <!-- PIN MODAL -->
 <div id="pin-overlay" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:9999;flex-direction:column;align-items:center;justify-content:center">
-  <div style="width:36px;height:36px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;margin-bottom:20px">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+  <div style="width:36px;height:36px;border-radius:10px;background:#3461c1;display:flex;align-items:center;justify-content:center;margin-bottom:20px">
+    <span style="font-size:20px;font-weight:800;color:white;font-family:'IBM Plex Sans',sans-serif;line-height:1">G</span>
   </div>
   <div style="font-size:20px;font-weight:800;margin-bottom:6px">Gastou, Kaio?</div>
   <div style="font-size:14px;color:var(--text2);margin-bottom:32px" id="pin-label">Digite seu PIN</div>
@@ -1343,7 +1343,7 @@ function renderQuickCats(){
   ];
   el.innerHTML=QUICK.map((q,i)=>`
     <button onclick="openQuickLanc('${q.cat}')" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px 10px;cursor:pointer;font-family:inherit;flex-shrink:0;min-width:56px;${i===0?'margin-left:2px':''}${i===QUICK.length-1?'margin-right:8px':''}">
-      <span style="font-size:20px;line-height:1">${q.icon}</span>
+      <span style="font-size:34px;line-height:1">${q.icon}</span>
       <span style="font-size:10px;font-weight:600;color:var(--text2);white-space:nowrap">${q.cat}</span>
     </button>`).join('');
 }
@@ -1806,7 +1806,7 @@ function getMonthExp(mo,yr){
 // ===== ITEM HTML =====
 function itemHTML(e){
   const cats=allCats(),catIdx=cats.indexOf(e.categoria),color=PIE_COLORS[catIdx%PIE_COLORS.length]||PIE_COLORS[0];
-  const contaIdx=contas.indexOf(e.conta),contaBg=contaIdx===0?'rgba(26,58,107,0.2)':contaIdx===1?'rgba(14,203,129,0.15)':'rgba(100,100,100,0.2)',contaTc=contaIdx===0?'#60A5FA':contaIdx===1?'#34D399':'#9CA3AF';
+  const contaIdx=contas.indexOf(e.conta),contaBg=contaIdx===0?'rgba(52,97,193,0.15)':contaIdx===1?'rgba(14,203,129,0.15)':'rgba(100,100,100,0.2)',contaTc=contaIdx===0?'#60A5FA':contaIdx===1?'#34D399':'#9CA3AF';
   const isEntrada=e.tipo==='entrada';
   const isPendente=e.status==='pendente';
   const isVencido=e.status==='vencido';
@@ -2095,9 +2095,9 @@ function renderAll(){
 
   // Hero — novos IDs Pierre
   const saldoEl=document.getElementById('h-saldo');
-  if(saldoEl){saldoEl.textContent=fmt(Math.abs(monSaldo));saldoEl.style.color=monSaldo>=0?'#4a7fd4':'#F6465D';}
+  if(saldoEl){saldoEl.textContent=fmt(Math.abs(monSaldo));saldoEl.style.color=monSaldo>=0?'#3461c1':'#F6465D';}
   const entEl=document.getElementById('h-entradas');if(entEl)entEl.textContent=fmt(monEntradas);
-  const mesEl=document.getElementById('h-mes');if(mesEl)mesEl.textContent=fmt(monSaidas);
+  const mesEl=document.getElementById('h-mes');if(mesEl){mesEl.textContent=fmt(Math.abs(monSaldo));mesEl.style.color=monSaldo>=0?'var(--text)':'#F6465D';}
   const despEl=document.getElementById('h-despesas-val');if(despEl)despEl.textContent=fmt(monSaidas);
   const totEl=document.getElementById('h-total-count');if(totEl)totEl.textContent=getThisMonth().length;
   const htlEl=document.getElementById('h-total-label');if(htlEl)htlEl.textContent=expenses.length+' registro'+(expenses.length!==1?'s':'');
@@ -2126,13 +2126,15 @@ function renderAll(){
 
   const vsEl=document.getElementById('h-vs-label');
   const vsSubEl=document.getElementById('h-vs-sub');
+  const monTotal=monSaldo;
+  const prevTotal=getMonthExp(prevMo,prevYr).reduce((s,e)=>s+(e.valor||0),0);
   if(vsEl){
-    if(prevSaidas>0){
-      const diff=monSaidas-prevSaidas,pct=Math.abs(Math.round(diff/prevSaidas*100));
+    if(prevTotal>0){
+      const diff=monTotal-prevTotal,pct=Math.abs(Math.round(diff/prevTotal*100));
       vsEl.textContent=(diff>=0?'+':'-')+pct+'%';
       vsEl.style.color=diff>=0?'#F6465D':'#34D399';
       vsEl.closest('div').style.background=diff>=0?'rgba(246,70,93,0.12)':'rgba(14,203,129,0.12)';
-      if(vsSubEl)vsSubEl.textContent='vs R$ '+Number(prevSaidas).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+' mês anterior';
+      if(vsSubEl)vsSubEl.textContent='vs '+fmt(prevTotal)+' mês anterior';
     } else {
       vsEl.textContent='0.0%';
       if(vsSubEl)vsSubEl.textContent='vs R$ 0,00 mês anterior';
@@ -2248,7 +2250,7 @@ function renderMainList(){
   const tlTotal=document.getElementById('tl-total');if(tlTotal)tlTotal.textContent=filtrados.length;
   const tlDesp=document.getElementById('tl-despesas');if(tlDesp)tlDesp.textContent=fmtS(desp);
   const tlRec=document.getElementById('tl-receitas');if(tlRec)tlRec.textContent=fmtS(rec);
-  const tlSaldo=document.getElementById('tl-saldo');if(tlSaldo){tlSaldo.textContent=fmtS(Math.abs(saldo));tlSaldo.style.color=saldo>=0?'#4a7fd4':'#F6465D';}
+  const tlSaldo=document.getElementById('tl-saldo');if(tlSaldo){tlSaldo.textContent=fmtS(Math.abs(saldo));tlSaldo.style.color=saldo>=0?'#3461c1':'#F6465D';}
   const f=getFiltered();
   document.getElementById('main-list').innerHTML=f.length===0?'<div class="empty">Nenhum lançamento neste período.</div>':f.map(e=>itemHTML(e)).join('');
 }
