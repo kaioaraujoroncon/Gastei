@@ -24,7 +24,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 .page-header h2{font-size:24px;font-weight:800;letter-spacing:-.5px;}
 .page-header p{font-size:13px;color:var(--text2);margin-top:2px;}
 .input-card{background:var(--surface);border-radius:var(--radius);padding:6px 0px 0px;margin-bottom:12px;box-shadow:var(--shadow);overflow:hidden;border:1px solid var(--border);}
-textarea{display:block;width:100%;font-size:15px;font-family:'IBM Plex Sans',sans-serif;color:var(--text);background:var(--bg2);border:1px solid transparent;border-radius:var(--radius-sm);padding:10px 44px 10px 12px;min-height:48px;resize:none;outline:none;transition:border-color .2s;}
+textarea{display:block;width:100%;font-size:14px;font-family:'IBM Plex Sans',sans-serif;color:var(--text);background:var(--bg2);border:1px solid transparent;border-radius:var(--radius-sm);padding:9px 44px 9px 12px;min-height:40px;resize:none;outline:none;transition:border-color .2s;}
 textarea:focus{border-color:var(--accent);}
 textarea::placeholder{color:var(--text3);font-size:13px;}
 .input-row{display:flex;gap:8px;margin-top:10px;}
@@ -283,15 +283,15 @@ select.setting-input{text-align:left;cursor:pointer;}
   <div style="padding-top:0">
 
     <!-- HEADER estilo Pierre -->
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 16px 8px;position:sticky;top:0;background:var(--bg);z-index:10">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px 8px;position:sticky;top:0;background:var(--bg);z-index:10">
       <div style="display:flex;align-items:center;gap:8px">
         <button onclick="togglePrivacy()" id="privacy-btn" style="width:36px;height:36px;background:var(--surface);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer">
           <svg id="eye-icon" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--text2)" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
         </button>
-        <div style="font-size:17px;font-weight:700;color:var(--text)">Gastou, Kaio?</div>
+        <div style="font-size:16px;font-weight:700;color:var(--text);white-space:nowrap">Gastou, Kaio?</div>
       </div>
       <div style="display:flex;align-items:center;gap:8px">
-        <div style="font-size:11px;color:var(--text3)" id="home-date"></div>
+        <div style="font-size:10px;color:var(--text3);white-space:nowrap;max-width:80px;overflow:hidden;text-overflow:ellipsis" id="home-date"></div>
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:6px">
           <div style="width:8px;height:8px;border-radius:50%;background:#1a3a6b;border:2px solid #4a7fd4"></div>
           <span id="h-conta-ativa">Pessoal</span>
@@ -300,14 +300,14 @@ select.setting-input{text-align:left;cursor:pointer;}
     </div>
 
     <!-- RITMO DE GASTOS — estilo Pierre -->
-    <div style="padding:0 16px;margin-bottom:12px">
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px">
+    <div style="padding:0 16px;margin-bottom:10px">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
           <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.12em">Ritmo de gastos</div>
           <button onclick="showPage('lancamentos')" style="font-size:12px;color:#4a7fd4;font-weight:600;background:none;border:none;cursor:pointer;font-family:inherit">ver todas ↗</button>
         </div>
         <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px">
-          <div style="font-size:32px;font-weight:800;letter-spacing:-1px;color:var(--text)" id="h-mes">R$ 0</div>
+          <div style="font-size:26px;font-weight:800;letter-spacing:-1px;color:var(--text)" id="h-mes">R$ 0</div>
           <div style="font-size:14px;color:var(--text3)" id="h-ritmo-label">este mês</div>
         </div>
         <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(246,70,93,0.12);border-radius:8px;padding:4px 10px;margin-bottom:12px">
@@ -315,7 +315,7 @@ select.setting-input{text-align:left;cursor:pointer;}
           <span style="font-size:12px;font-weight:700;color:#F6465D" id="h-vs-label">—</span>
           <span style="font-size:11px;color:var(--text3)" id="h-vs-sub">vs mês anterior</span>
         </div>
-        <canvas id="sparkline" height="60" style="width:100%;display:block"></canvas>
+        <canvas id="sparkline" height="44" style="width:100%;display:block"></canvas>
         <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-top:6px">
           <span>1</span><span style="color:var(--text3)" id="h-hoje-dia"></span><span id="h-last-day">31</span>
         </div>
@@ -329,12 +329,12 @@ select.setting-input{text-align:left;cursor:pointer;}
     <!-- GRID 2x2 resumo -->
     <div style="padding:0 16px;margin-bottom:12px">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="var(--text3)" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"/></svg>
-            <span style="font-size:11px;color:var(--text3);font-weight:600">Total lançamentos</span>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px">
+          <div style="display:flex;align-items:center;gap:5px;margin-bottom:6px">
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="var(--text3)" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"/></svg>
+            <span style="font-size:10px;color:var(--text3);font-weight:600">Total lançamentos</span>
           </div>
-          <div style="font-size:24px;font-weight:800;color:var(--text)" id="h-total-count">0</div>
+          <div style="font-size:20px;font-weight:800;color:var(--text)" id="h-total-count">0</div>
         </div>
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px">
           <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
@@ -343,19 +343,19 @@ select.setting-input{text-align:left;cursor:pointer;}
           </div>
           <div style="font-size:20px;font-weight:800;color:#F6465D" id="h-despesas-val">R$ 0</div>
         </div>
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#0ECB81" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-            <span style="font-size:11px;color:var(--text3);font-weight:600">Receitas</span>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px">
+          <div style="display:flex;align-items:center;gap:5px;margin-bottom:6px">
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="#0ECB81" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+            <span style="font-size:10px;color:var(--text3);font-weight:600">Receitas</span>
           </div>
-          <div style="font-size:20px;font-weight:800;color:#0ECB81" id="h-entradas">R$ 0</div>
+          <div style="font-size:18px;font-weight:800;color:#0ECB81" id="h-entradas">R$ 0</div>
         </div>
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#4a7fd4" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
-            <span style="font-size:11px;color:var(--text3);font-weight:600">Saldo</span>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px">
+          <div style="display:flex;align-items:center;gap:5px;margin-bottom:6px">
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="#4a7fd4" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+            <span style="font-size:10px;color:var(--text3);font-weight:600">Saldo</span>
           </div>
-          <div style="font-size:20px;font-weight:800" id="h-saldo">R$ 0</div>
+          <div style="font-size:18px;font-weight:800" id="h-saldo">R$ 0</div>
         </div>
       </div>
     </div>
@@ -381,7 +381,7 @@ select.setting-input{text-align:left;cursor:pointer;}
     <div style="padding:0 16px;margin-bottom:12px">
       <div class="input-card" style="margin-bottom:0">
         <div style="position:relative;padding:0 12px">
-          <textarea id="msg" rows="2" placeholder="Ex: Investimentos - R$16.000, Relógios - 10x de R$4.000, Viagens - 12x de R$2.000" style="padding-right:48px"></textarea>
+          <textarea id="msg" rows="2" placeholder="Ex: Frango 62,70 · Uber 2,56 · Relógio 10x de 4k" style="padding-right:48px"></textarea>
           <button id="mic-btn" onclick="toggleVoice()" style="position:absolute;right:20px;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;background:#1a3a6b;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;">
             <svg id="mic-icon" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
           </button>
@@ -1333,8 +1333,8 @@ function renderQuickCats(){
     {icon:'💰',cat:'Investimentos'},
   ];
   el.innerHTML=QUICK.map(q=>`
-    <button onclick="openQuickLanc('${q.cat}')" style="display:flex;flex-direction:column;align-items:center;gap:5px;background:var(--surface);border:none;border-radius:12px;padding:10px 12px;cursor:pointer;font-family:inherit;flex-shrink:0;min-width:64px;box-shadow:0 2px 8px rgba(0,0,0,0.3)">
-      <span style="font-size:22px;line-height:1">${q.icon}</span>
+    <button onclick="openQuickLanc('${q.cat}')" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px 10px;cursor:pointer;font-family:inherit;flex-shrink:0;min-width:56px">
+      <span style="font-size:20px;line-height:1">${q.icon}</span>
       <span style="font-size:10px;font-weight:600;color:var(--text2);white-space:nowrap">${q.cat}</span>
     </button>`).join('');
 }
