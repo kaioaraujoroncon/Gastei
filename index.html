@@ -13,8 +13,8 @@
 :root{--accent:#1a3a6b;--accent-bright:#2952a3;--accent-dark:#0f2444;--accent-text:#FFFFFF;--red:#F6465D;--green-val:#0ECB81;--orange:#FBBF24;--purple:#8B5CF6;--bg:#050508;--bg2:#0c0c12;--surface:#111118;--surface2:#16161f;--border:rgba(255,255,255,0.06);--text:#E8EAF0;--text2:#7a8499;--text3:#3d4558;--radius:14px;--radius-sm:10px;--shadow:0 4px 24px rgba(0,0,0,0.7);}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
-#app{max-width:430px;margin:0 auto;padding-bottom:90px;}
-.nav{display:flex;background:rgba(10,10,16,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);position:fixed;bottom:0;left:0;right:0;z-index:100;max-width:430px;margin:0 auto;padding-bottom:env(safe-area-inset-bottom);}
+#app{max-width:100%;margin:0;padding-bottom:90px;}
+.nav{display:flex;background:rgba(10,10,16,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);position:fixed;bottom:0;left:0;right:0;z-index:100;padding-bottom:env(safe-area-inset-bottom);}
 .nav-btn{flex:1;padding:12px 2px;font-size:9px;font-weight:600;color:var(--text3);background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-family:inherit;transition:color .15s;}
 .nav-btn.active{color:#4a7fd4;}
 .nav-btn svg{width:22px;height:22px;}
@@ -30,8 +30,8 @@ textarea::placeholder{color:var(--text3);font-size:13px;}
 .input-row{display:flex;gap:8px;margin-top:10px;}
 .btn-primary{flex:1;background:var(--accent);color:var(--accent-text);font-size:15px;font-weight:700;border:none;border-radius:var(--radius-sm);padding:14px;cursor:pointer;font-family:inherit;transition:background .15s;}
 .btn-primary:active{background:var(--accent-dark);}
-.status{font-size:13px;min-height:20px;margin-top:8px;color:var(--green-val);text-align:center;font-weight:600;}
-.status.err{color:var(--red);}
+.status{font-size:13px;min-height:0;margin:0;padding:0;color:var(--green-val);text-align:center;font-weight:600;transition:all .2s;}
+.status.err{color:var(--red);}.status:not(:empty){padding:6px 0;min-height:20px;}
 .examples{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
 .ex{font-size:11px;background:var(--bg2);border-radius:20px;padding:5px 12px;cursor:pointer;color:var(--text2);font-weight:500;}
 .cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
@@ -396,7 +396,7 @@ select.setting-input{text-align:left;cursor:pointer;}
             Saída
           </button>
         </div>
-        <div id="status" class="status"></div>
+        <div id="status" class="status" style="min-height:0;margin:0;padding:0"></div>
       </div>
     </div>
 
