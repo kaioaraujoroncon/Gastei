@@ -10,21 +10,21 @@
 <title>Gastou, Kaio?</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--accent:#1240A8;--accent-dark:#0D2E80;--accent-text:#FFFFFF;--red:#F6465D;--green-val:#0ECB81;--orange:#FBBF24;--purple:#8B5CF6;--bg:#0B0E11;--bg2:#0E1218;--surface:#131720;--surface2:#131720;--border:transparent;--text:#EAECEF;--text2:#848E9C;--text3:#474D57;--radius:8px;--radius-sm:6px;--shadow:0 4px 16px rgba(0,0,0,0.4);}
+:root{--accent:#1a3a6b;--accent-bright:#2952a3;--accent-dark:#0f2444;--accent-text:#FFFFFF;--red:#F6465D;--green-val:#0ECB81;--orange:#FBBF24;--purple:#8B5CF6;--bg:#050508;--bg2:#0c0c12;--surface:#111118;--surface2:#16161f;--border:rgba(255,255,255,0.06);--text:#E8EAF0;--text2:#7a8499;--text3:#3d4558;--radius:14px;--radius-sm:10px;--shadow:0 4px 24px rgba(0,0,0,0.7);}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 #app{max-width:430px;margin:0 auto;padding-bottom:90px;}
-.nav{display:flex;background:var(--surface);position:fixed;bottom:0;left:0;right:0;z-index:100;max-width:430px;margin:0 auto;padding-bottom:env(safe-area-inset-bottom);}
-.nav-btn{flex:1;padding:10px 2px;font-size:8px;font-weight:600;color:var(--text3);background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;font-family:inherit;transition:color .15s;}
-.nav-btn.active{color:var(--accent);}
-.nav-btn svg{width:20px;height:20px;}
+.nav{display:flex;background:rgba(10,10,16,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);position:fixed;bottom:0;left:0;right:0;z-index:100;max-width:430px;margin:0 auto;padding-bottom:env(safe-area-inset-bottom);}
+.nav-btn{flex:1;padding:12px 2px;font-size:9px;font-weight:600;color:var(--text3);background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-family:inherit;transition:color .15s;}
+.nav-btn.active{color:#4a7fd4;}
+.nav-btn svg{width:22px;height:22px;}
 .page{display:none;padding:16px;}
 .page.active{display:block;}
 .page-header{margin-bottom:20px;padding-top:16px;}
 .page-header h2{font-size:24px;font-weight:800;letter-spacing:-.5px;}
 .page-header p{font-size:13px;color:var(--text2);margin-top:2px;}
-.input-card{background:var(--surface);border-radius:var(--radius);padding:6px 0px 0px;margin-bottom:12px;box-shadow:var(--shadow);overflow:hidden;}
-textarea{display:block;width:100%;font-size:15px;font-family:'IBM Plex Sans',sans-serif;color:var(--text);background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:10px 44px 10px 12px;min-height:48px;resize:none;outline:none;transition:border-color .2s;}
+.input-card{background:var(--surface);border-radius:var(--radius);padding:6px 0px 0px;margin-bottom:12px;box-shadow:var(--shadow);overflow:hidden;border:1px solid var(--border);}
+textarea{display:block;width:100%;font-size:15px;font-family:'IBM Plex Sans',sans-serif;color:var(--text);background:var(--bg2);border:1px solid transparent;border-radius:var(--radius-sm);padding:10px 44px 10px 12px;min-height:48px;resize:none;outline:none;transition:border-color .2s;}
 textarea:focus{border-color:var(--accent);}
 textarea::placeholder{color:var(--text3);font-size:13px;}
 .input-row{display:flex;gap:8px;margin-top:10px;}
@@ -35,7 +35,7 @@ textarea::placeholder{color:var(--text3);font-size:13px;}
 .examples{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
 .ex{font-size:11px;background:var(--bg2);border-radius:20px;padding:5px 12px;cursor:pointer;color:var(--text2);font-weight:500;}
 .cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
-.card{background:var(--surface);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);}
+.card{background:var(--surface);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);border:1px solid var(--border);}
 .card .lbl{font-size:10px;color:var(--text3);margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;}
 .card .val{font-size:18px;font-weight:800;color:var(--text);letter-spacing:-.3px;}
 .card .val.red{color:var(--red);}
@@ -50,17 +50,17 @@ textarea::placeholder{color:var(--text3);font-size:13px;}
 .budget-bar-fill.warn{background:#FBBF24;}
 .budget-bar-fill.over{background:var(--red);}
 .sec-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-.sec-title{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;}
+.sec-title{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.12em;}
 .btn-sm{font-size:12px;background:none;border-radius:6px;padding:4px 10px;color:var(--text2);cursor:pointer;font-family:inherit;font-weight:600;}
 .btn-sm:hover{color:var(--red);border-color:var(--red);}
 .btn-sm.active{color:var(--accent);border-color:var(--accent);}
 .btn-sm.active:hover{color:var(--accent);border-color:var(--accent);}
 .filters{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:4px;}
 .filters::-webkit-scrollbar{display:none;}
-.pill{font-size:12px;padding:6px 14px;border-radius:20px;background:var(--surface);color:var(--text2);cursor:pointer;white-space:nowrap;font-family:inherit;font-weight:500;}
-.pill.active{background:var(--accent);color:white;border-color:var(--accent);}
+.pill{font-size:12px;padding:7px 16px;border-radius:20px;background:var(--surface2);color:var(--text2);cursor:pointer;white-space:nowrap;font-family:inherit;font-weight:500;border:1px solid var(--border);}
+.pill.active{background:rgba(41,82,163,0.25);color:#4a7fd4;border-color:rgba(74,127,212,0.4);}
 .list{display:flex;flex-direction:column;gap:8px;}
-.item{background:var(--surface);border-radius:var(--radius);padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;box-shadow:var(--shadow);}
+.item{background:var(--surface);border-radius:var(--radius);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;box-shadow:var(--shadow);border:1px solid var(--border);}
 .item.pendente{opacity:.75;border-left:3px solid var(--orange);}
 .item.vencido{border-left:3px solid var(--red);background:rgba(246,70,93,0.06);}
 .nav-badge{position:absolute;top:6px;right:calc(50% - 18px);background:var(--red);color:#fff;font-size:9px;font-weight:800;border-radius:10px;padding:1px 5px;min-width:16px;text-align:center;line-height:14px;}
@@ -69,10 +69,10 @@ textarea::placeholder{color:var(--text3);font-size:13px;}
 .btn-pagar{font-size:11px;font-weight:700;background:var(--green-val);color:#fff;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-family:inherit;white-space:nowrap;}
 .btn-pagar:active{background:#0aa368;}
 .item-l{flex:1;min-width:0;}
-.item-l .desc{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.item-l .desc{font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .item-l .meta{font-size:11px;color:var(--text3);margin-top:3px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
 .item-r{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
-.item-r .amt{font-size:14px;font-weight:700;color:var(--red);white-space:nowrap;}
+.item-r .amt{font-size:15px;font-weight:700;color:var(--red);white-space:nowrap;}
 .item-actions{display:flex;gap:4px;}
 .icon-btn{width:28px;height:28px;border-radius:6px;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .icon-btn:hover{background:var(--bg2);}
@@ -80,10 +80,10 @@ textarea::placeholder{color:var(--text3);font-size:13px;}
 .icon-btn.del:hover{border-color:var(--red);}
 .icon-btn.del:hover svg{color:var(--red);}
 .badge{font-size:10px;padding:2px 7px;border-radius:6px;font-weight:600;}
-.badge-parcela{font-size:10px;padding:2px 7px;border-radius:6px;font-weight:700;background:rgba(251,191,36,0.15);color:#FBBF24;}
+.badge-parcela{font-size:10px;padding:2px 7px;border-radius:6px;font-weight:700;background:rgba(74,127,212,0.15);color:#4a7fd4;}
 .badge-pendente{font-size:10px;padding:2px 7px;border-radius:6px;font-weight:700;background:rgba(139,92,246,0.15);color:#A78BFA;}
 .empty{text-align:center;color:var(--text3);font-size:14px;padding:32px 0;}
-.chart-wrap{background:var(--surface);border-radius:var(--radius);padding:16px;margin-bottom:16px;box-shadow:var(--shadow);}
+.chart-wrap{background:var(--surface);border-radius:var(--radius);padding:16px;margin-bottom:16px;box-shadow:var(--shadow);border:1px solid var(--border);}
 .chart-title{font-size:11px;font-weight:700;color:var(--text3);margin-bottom:14px;text-transform:uppercase;letter-spacing:.08em;}
 .pie-wrap{display:flex;gap:20px;align-items:center;}
 canvas#pieChart{width:110px!important;height:110px!important;}
@@ -98,7 +98,7 @@ canvas#pieChart{width:110px!important;height:110px!important;}
 .bar-track{flex:1;height:6px;background:var(--bg2);border-radius:3px;overflow:hidden;}
 .bar-fill{height:100%;border-radius:3px;background:var(--accent);transition:width .4s;}
 .bar-val{font-size:11px;color:var(--text2);min-width:55px;text-align:right;}
-.setting-group{background:var(--surface);border-radius:var(--radius);overflow:hidden;margin-bottom:16px;}
+.setting-group{background:var(--surface);border-radius:var(--radius);overflow:hidden;margin-bottom:16px;border:1px solid var(--border);}
 .setting-row{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;}
 .setting-label{font-size:14px;font-weight:600;}
 .setting-sub{font-size:12px;color:var(--text3);margin-top:2px;}
@@ -107,7 +107,7 @@ canvas#pieChart{width:110px!important;height:110px!important;}
 select.setting-input{text-align:left;cursor:pointer;}
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:200;align-items:flex-end;}
 .modal-bg.open{display:flex;}
-.modal{background:var(--surface);border-radius:16px 16px 0 0;padding:20px;width:100%;max-width:430px;margin:0 auto;}
+.modal{background:#0e0e16;border-radius:24px 24px 0 0;padding:24px;width:100%;max-width:430px;margin:0 auto;border-top:1px solid var(--border);}
 .modal h3{font-size:17px;font-weight:700;margin-bottom:16px;}
 .modal-field{margin-bottom:12px;}
 .modal-field label{font-size:12px;color:var(--text2);font-weight:600;display:block;margin-bottom:4px;}
@@ -115,7 +115,7 @@ select.setting-input{text-align:left;cursor:pointer;}
 .modal-field input:focus,.modal-field select:focus{border-color:var(--accent);}
 .modal-actions{display:flex;gap:10px;margin-top:16px;}
 .btn-cancel{flex:1;background:var(--bg2);color:var(--text2);font-size:15px;font-weight:600;border-radius:var(--radius-sm);padding:13px;cursor:pointer;font-family:inherit;}
-.btn-save{flex:2;background:var(--accent);color:white;font-size:15px;font-weight:700;border:none;border-radius:var(--radius-sm);padding:13px;cursor:pointer;font-family:inherit;}
+.btn-save{flex:2;background:#1a3a6b;color:white;font-size:15px;font-weight:700;border:none;border-radius:var(--radius-sm);padding:13px;cursor:pointer;font-family:inherit;}
 .recur-item{background:var(--surface);border-radius:var(--radius);padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;box-shadow:var(--shadow);}
 .recur-name{font-size:14px;font-weight:600;}
 .recur-meta{font-size:11px;color:var(--text3);margin-top:2px;}
@@ -144,26 +144,26 @@ select.setting-input{text-align:left;cursor:pointer;}
 .comp-diff.neutral{color:var(--text3);}
 .comp-header{display:flex;justify-content:space-between;font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;padding-bottom:8px;margin-bottom:2px;}
 .pagto-badge{font-size:10px;padding:2px 7px;border-radius:6px;font-weight:600;background:rgba(251,191,36,0.15);color:#FBBF24;}
-.conta-slide-card{flex-shrink:0;background:var(--surface);border-radius:var(--radius);padding:10px 14px;cursor:pointer;transition:border-color .15s,background .15s;min-width:120px;}
-.conta-slide-card.active{border-color:var(--accent);background:rgba(18,64,168,0.12);}
+.conta-slide-card{flex-shrink:0;background:var(--surface);border-radius:var(--radius);padding:10px 14px;cursor:pointer;transition:border-color .15s,background .15s;min-width:120px;border:1px solid var(--border);}
+.conta-slide-card.active{border-color:rgba(74,127,212,0.5);background:rgba(26,58,107,0.2);}
 .conta-slide-card .cs-lbl{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
 .conta-slide-card .cs-val{font-size:16px;font-weight:800;color:var(--red);letter-spacing:-.3px;}
 .conta-slide-card.active .cs-lbl{color:var(--accent);}
-.btn-entrada{flex:1;background:#0ECB81;color:#fff;font-size:14px;font-weight:700;border:none;border-radius:0 0 0 var(--radius);padding:10px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;transition:background .15s;}
+.btn-entrada{flex:1;background:#0a8a57;color:#fff;font-size:14px;font-weight:700;border:none;border-radius:0 0 0 var(--radius);padding:11px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;transition:background .15s;}
 .btn-entrada:active{background:#0aa368;}
-.btn-saida{flex:1;background:var(--red);color:#fff;font-size:14px;font-weight:700;border:none;border-radius:0 0 var(--radius) 0;padding:10px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;transition:background .15s;}
+.btn-saida{flex:1;background:#9b2335;color:#fff;font-size:14px;font-weight:700;border:none;border-radius:0 0 var(--radius) 0;padding:11px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;transition:background .15s;}
 .btn-saida:active{background:#c73348;}
 .privacy-hide{filter:blur(8px);user-select:none;pointer-events:none;transition:filter .2s;}
 @keyframes pulse-mic{0%,100%{box-shadow:0 0 0 0 rgba(246,70,93,0.5);}50%{box-shadow:0 0 0 8px rgba(246,70,93,0);}}
 
 /* ===== FUTURO TAB STYLES ===== */
-.futuro-hero{background:linear-gradient(135deg,rgba(139,92,246,0.2),rgba(18,64,168,0.2));border:1px solid rgba(139,92,246,0.2);border-radius:14px;padding:16px;margin-bottom:16px;}
+.futuro-hero{background:linear-gradient(135deg,rgba(15,36,68,0.8),rgba(26,58,107,0.6));border:1px solid rgba(74,127,212,0.2);border-radius:18px;padding:18px;margin-bottom:16px;}
 .futuro-hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
-.futuro-hero-title{font-size:11px;font-weight:700;color:rgba(167,139,250,0.8);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;}
-.futuro-hero-val{font-size:28px;font-weight:800;color:#A78BFA;letter-spacing:-1px;}
+.futuro-hero-title{font-size:11px;font-weight:700;color:rgba(74,127,212,0.8);text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px;}
+.futuro-hero-val{font-size:28px;font-weight:800;color:#4a7fd4;letter-spacing:-1px;}
 .futuro-hero-sub{font-size:12px;color:var(--text2);margin-top:2px;}
 .futuro-months{display:flex;flex-direction:column;gap:10px;}
-.futuro-month-card{background:var(--surface);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);}
+.futuro-month-card{background:var(--surface);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border);}
 .futuro-month-header{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;cursor:pointer;user-select:none;}
 .futuro-month-header:active{background:var(--bg2);}
 .futuro-month-name{font-size:14px;font-weight:700;text-transform:capitalize;}
@@ -210,15 +210,15 @@ select.setting-input{text-align:left;cursor:pointer;}
 .saz-name{font-size:15px;font-weight:700;}
 .saz-sub{font-size:11px;color:var(--text3);margin-top:2px;}
 .saz-bar{height:6px;background:var(--bg2);border-radius:3px;overflow:hidden;margin:8px 0;}
-.saz-bar-fill{height:100%;border-radius:3px;background:#8B5CF6;transition:width .4s;}
+.saz-bar-fill{height:100%;border-radius:3px;background:#2952a3;transition:width .4s;}
 .saz-bar-fill.done{background:var(--green-val);}
 .saz-vals{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);}
-.saz-pill{font-size:10px;padding:2px 8px;border-radius:6px;font-weight:700;background:rgba(139,92,246,0.15);color:#A78BFA;}
-.btn-contribuir{font-size:11px;font-weight:700;background:rgba(139,92,246,0.2);color:#A78BFA;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-family:inherit;}
+.saz-pill{font-size:10px;padding:2px 8px;border-radius:6px;font-weight:700;background:rgba(41,82,163,0.2);color:#4a7fd4;}
+.btn-contribuir{font-size:11px;font-weight:700;background:rgba(41,82,163,0.2);color:#4a7fd4;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-family:inherit;}
 .btn-contribuir:active{background:rgba(139,92,246,0.4);}
 
 /* ===== FATURA CARD ===== */
-.fatura-card{background:var(--surface);border-radius:var(--radius);padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;box-shadow:var(--shadow);cursor:pointer;}
+.fatura-card{background:var(--surface);border-radius:var(--radius);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;box-shadow:var(--shadow);cursor:pointer;border:1px solid var(--border);}
 .fatura-card.alerta{border-left:3px solid var(--orange);}
 .fatura-card.vencendo{border-left:3px solid var(--red);}
 .fatura-nome{font-size:13px;font-weight:700;}
@@ -247,7 +247,7 @@ select.setting-input{text-align:left;cursor:pointer;}
 #pin-overlay.visible{display:flex!important;}
 
 /* ===== UNDO TOAST ===== */
-#undo-toast{position:fixed;bottom:110px;left:16px;right:16px;transform:translateY(20px);background:#2A3142;color:var(--text);font-size:14px;font-weight:600;padding:14px 16px;border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,0.6);z-index:9000;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;}
+#undo-toast{position:fixed;bottom:110px;left:16px;right:16px;transform:translateY(20px);background:#0e1420;color:var(--text);font-size:14px;font-weight:600;padding:14px 16px;border-radius:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,0.8);z-index:9000;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;border:1px solid rgba(74,127,212,0.3);}
 #undo-toast.visible{opacity:1;transform:translateY(0);pointer-events:all;}
 #undo-toast button{background:var(--accent);color:white;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0;}
 </style>
@@ -280,119 +280,144 @@ select.setting-input{text-align:left;cursor:pointer;}
 
 <!-- HOME -->
 <div class="page active" id="page-home">
-  <div style="padding-top:12px">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-      <div style="display:flex;align-items:center;gap:10px">
-        <div style="width:36px;height:36px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
-        </div>
-        <div>
-          <div style="font-size:19px;font-weight:800;letter-spacing:-.5px;line-height:1">Gastou, Kaio?</div>
-          <div style="font-size:11px;color:var(--text3);margin-top:1px" id="home-date"></div>
-        </div>
-      </div>
-      <div style="display:flex;gap:6px">
-        <button onclick="showPage('lancamentos')" style="background:none;border-radius:8px;padding:6px 10px;color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">Ver tudo</button>
-        <button onclick="togglePrivacy()" id="privacy-btn" style="background:none;border-radius:8px;padding:6px 8px;color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;">
-          <svg id="eye-icon" width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+  <div style="padding-top:0">
+
+    <!-- HEADER estilo Pierre -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 16px 8px;position:sticky;top:0;background:var(--bg);z-index:10">
+      <div style="display:flex;align-items:center;gap:8px">
+        <button onclick="togglePrivacy()" id="privacy-btn" style="width:36px;height:36px;background:var(--surface);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer">
+          <svg id="eye-icon" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--text2)" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
         </button>
+        <div style="font-size:17px;font-weight:700;color:var(--text)">Gastou, Kaio?</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="font-size:11px;color:var(--text3)" id="home-date"></div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:6px">
+          <div style="width:8px;height:8px;border-radius:50%;background:#1a3a6b;border:2px solid #4a7fd4"></div>
+          <span id="h-conta-ativa">Pessoal</span>
+        </div>
       </div>
     </div>
 
-    <!-- Hero card -->
-    <div style="background:var(--accent);border-radius:14px;padding:10px 16px;margin-bottom:12px;position:relative;overflow:hidden">
-      <div style="position:absolute;right:-10px;top:-10px;width:120px;height:120px;background:rgba(255,255,255,0.05);border-radius:50%"></div>
-      <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px">Saldo este mês</div>
-      <div style="font-size:30px;font-weight:800;color:white;letter-spacing:-1px;line-height:1" id="h-saldo">R$ 0</div>
-      <div style="display:flex;gap:16px;margin-top:10px">
-        <div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.5);font-weight:700;text-transform:uppercase;letter-spacing:.06em">Entradas</div>
-          <div style="font-size:15px;font-weight:700;color:#34D399" id="h-entradas">R$ 0</div>
+    <!-- RITMO DE GASTOS — estilo Pierre -->
+    <div style="padding:0 16px;margin-bottom:12px">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
+          <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.12em">Ritmo de gastos</div>
+          <button onclick="showPage('lancamentos')" style="font-size:12px;color:#4a7fd4;font-weight:600;background:none;border:none;cursor:pointer;font-family:inherit">ver todas ↗</button>
         </div>
-        <div style="width:1px;background:rgba(255,255,255,0.1)"></div>
-        <div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.5);font-weight:700;text-transform:uppercase;letter-spacing:.06em">Saídas</div>
-          <div style="font-size:15px;font-weight:700;color:#F6465D" id="h-mes">R$ 0</div>
+        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px">
+          <div style="font-size:32px;font-weight:800;letter-spacing:-1px;color:var(--text)" id="h-mes">R$ 0</div>
+          <div style="font-size:14px;color:var(--text3)" id="h-ritmo-label">este mês</div>
         </div>
-        <div style="width:1px;background:rgba(255,255,255,0.1)"></div>
-        <div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.5);font-weight:700;text-transform:uppercase;letter-spacing:.06em">Vs mês ant.</div>
-          <div style="font-size:15px;font-weight:700;color:rgba(255,255,255,0.8)" id="h-vs-label">—</div>
+        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(246,70,93,0.12);border-radius:8px;padding:4px 10px;margin-bottom:12px">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#F6465D" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+          <span style="font-size:12px;font-weight:700;color:#F6465D" id="h-vs-label">—</span>
+          <span style="font-size:11px;color:var(--text3)" id="h-vs-sub">vs mês anterior</span>
+        </div>
+        <canvas id="sparkline" height="60" style="width:100%;display:block"></canvas>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-top:6px">
+          <span>1</span><span style="color:var(--text3)" id="h-hoje-dia"></span><span id="h-last-day">31</span>
+        </div>
+        <div style="display:flex;gap:16px;margin-top:8px">
+          <div style="display:flex;align-items:center;gap:6px"><div style="width:20px;height:2px;background:#F6465D;border-radius:1px"></div><span style="font-size:11px;color:var(--text3)">Este mês</span></div>
+          <div style="display:flex;align-items:center;gap:6px"><div style="width:20px;height:2px;background:rgba(255,255,255,0.2);border-radius:1px;border-top:1px dashed rgba(255,255,255,0.3)"></div><span style="font-size:11px;color:var(--text3)">Mês passado</span></div>
         </div>
       </div>
-      <canvas id="sparkline" height="36" style="width:100%;margin-top:10px;display:block"></canvas>
+    </div>
+
+    <!-- GRID 2x2 resumo -->
+    <div style="padding:0 16px;margin-bottom:12px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="var(--text3)" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"/></svg>
+            <span style="font-size:11px;color:var(--text3);font-weight:600">Total lançamentos</span>
+          </div>
+          <div style="font-size:24px;font-weight:800;color:var(--text)" id="h-total-count">0</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#F6465D" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"/></svg>
+            <span style="font-size:11px;color:var(--text3);font-weight:600">Despesas</span>
+          </div>
+          <div style="font-size:20px;font-weight:800;color:#F6465D" id="h-despesas-val">R$ 0</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#0ECB81" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+            <span style="font-size:11px;color:var(--text3);font-weight:600">Receitas</span>
+          </div>
+          <div style="font-size:20px;font-weight:800;color:#0ECB81" id="h-entradas">R$ 0</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#4a7fd4" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+            <span style="font-size:11px;color:var(--text3);font-weight:600">Saldo</span>
+          </div>
+          <div style="font-size:20px;font-weight:800" id="h-saldo">R$ 0</div>
+        </div>
+      </div>
     </div>
 
     <!-- Meta de economia -->
-    <div id="meta-wrap" style="display:none;margin-bottom:12px">
-      <div style="background:var(--surface);border-radius:var(--radius);padding:12px 14px;box-shadow:var(--shadow)">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-          <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em">Meta de economia</div>
-          <div style="font-size:12px;font-weight:700" id="meta-pct-label"></div>
+    <div id="meta-wrap" style="display:none;padding:0 16px;margin-bottom:12px">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.12em">Meta de economia</div>
+          <div style="font-size:13px;font-weight:700" id="meta-pct-label"></div>
         </div>
-        <div style="height:6px;background:var(--bg2);border-radius:3px;overflow:hidden;margin-bottom:6px">
+        <div style="height:6px;background:var(--bg2);border-radius:3px;overflow:hidden;margin-bottom:8px">
           <div id="meta-bar-fill" style="height:100%;border-radius:3px;transition:width .4s,background .3s"></div>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3)">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text3)">
           <span id="meta-gasto-label"></span>
           <span id="meta-rest-label"></span>
         </div>
       </div>
     </div>
 
-    <!-- Input card -->
-    <div class="input-card" style="margin-bottom:12px">
-      <div style="position:relative;padding:0 12px">
-        <textarea id="msg" rows="2" placeholder="Ex: Investimentos - R$16.000, Relógios - 10x de R$4.000, Viagens - 12x de R$2.000" style="padding-right:48px"></textarea>
-        <button id="mic-btn" onclick="toggleVoice()" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;background:var(--accent);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;">
-          <svg id="mic-icon" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
-        </button>
-      </div>
-      <div class="input-row" style="gap:0px;margin-top:12px">
-        <button class="btn-entrada" onclick="sendMsg('entrada')">
-          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-          Entrada
-        </button>
-        <button class="btn-saida" onclick="sendMsg('saida')">
-          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4"/></svg>
-          Saída
-        </button>
-      </div>
-      <div id="status" class="status"></div>
-      </div>
-
-    <!-- 2 cards: hoje + compromissos -->
-    <div class="cards" style="margin-bottom:12px">
-      <div class="card">
-        <div class="lbl">Hoje</div>
-        <div class="val red" id="h-hoje">R$ 0</div>
-        <div style="font-size:10px;color:var(--text3);margin-top:4px" id="h-hoje-count"></div>
-      </div>
-      <div class="card" style="cursor:pointer" onclick="showPage('futuro')">
-        <div class="lbl">Parcelas futuras</div>
-        <div class="val" id="h-parcelas-val" style="font-size:15px;color:#A78BFA">—</div>
-        <div style="font-size:10px;color:var(--text3);margin-top:4px" id="h-parcelas-count"></div>
+    <!-- INPUT CARD -->
+    <div style="padding:0 16px;margin-bottom:12px">
+      <div class="input-card" style="margin-bottom:0">
+        <div style="position:relative;padding:0 12px">
+          <textarea id="msg" rows="2" placeholder="Ex: Investimentos - R$16.000, Relógios - 10x de R$4.000, Viagens - 12x de R$2.000" style="padding-right:48px"></textarea>
+          <button id="mic-btn" onclick="toggleVoice()" style="position:absolute;right:20px;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;background:#1a3a6b;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;">
+            <svg id="mic-icon" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
+          </button>
+        </div>
+        <div class="input-row" style="gap:0px;margin-top:12px">
+          <button class="btn-entrada" onclick="sendMsg('entrada')">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            Entrada
+          </button>
+          <button class="btn-saida" onclick="sendMsg('saida')">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4"/></svg>
+            Saída
+          </button>
+        </div>
+        <div id="status" class="status"></div>
       </div>
     </div>
 
-    <!-- Faturas de cartão -->
-    <div id="h-faturas-wrap" style="margin-bottom:12px;display:none">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <!-- LANÇAMENTO RÁPIDO -->
+    <div style="padding:0 16px;margin-bottom:12px">
+      <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px">Lançamento rápido</div>
+      <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none" id="quick-cats"></div>
+    </div>
+
+    <!-- FATURAS DE CARTÃO -->
+    <div id="h-faturas-wrap" style="padding:0 16px;margin-bottom:12px;display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
         <div class="sec-title">Faturas abertas</div>
       </div>
       <div id="h-faturas-list" style="display:flex;flex-direction:column;gap:8px"></div>
     </div>
 
-    <!-- Lançamento rápido -->
-    <div style="margin-bottom:12px">
-      <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Lançamento rápido</div>
-      <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none" id="quick-cats"></div>
-    </div>
-
-    <!-- Conta slider -->
-    <div style="margin-bottom:12px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <div class="sec-title">Por conta</div>
+    <!-- POR CONTA -->
+    <div style="padding:0 16px;margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div class="sec-title">Contas correntes</div>
         <div style="font-size:12px;color:var(--text3)" id="h-total-label">0 registros</div>
       </div>
       <div id="conta-slider" style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;"></div>
@@ -414,23 +439,66 @@ select.setting-input{text-align:left;cursor:pointer;}
 
 <!-- LANÇAMENTOS -->
 <div class="page" id="page-lancamentos">
-  <div class="page-header"><h2>Lançamentos</h2><p>Todos os seus gastos</p></div>
-  <div style="position:relative;margin-bottom:12px">
-    <svg style="position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--text3)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35"/></svg>
-    <input type="text" id="search-input" placeholder="Buscar lançamentos..." oninput="renderMainList()" style="width:100%;background:var(--surface);border:none;border-radius:var(--radius);padding:12px 12px 12px 38px;font-size:14px;font-family:inherit;color:var(--text);outline:none;box-shadow:var(--shadow)">
+  <!-- Header -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 0 12px">
+    <div style="font-size:20px;font-weight:800;letter-spacing:-.5px">Transações</div>
+    <button onclick="clearAll()" style="background:none;border:none;color:var(--text3);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">Limpar tudo</button>
   </div>
-  <div style="display:flex;gap:8px;margin-bottom:8px;align-items:center">
-    <div style="display:flex;align-items:center;gap:4px;background:var(--surface);border-radius:var(--radius);padding:8px 12px;flex:1;box-shadow:var(--shadow)">
+
+  <!-- Busca + filtro valor -->
+  <div style="display:flex;gap:8px;margin-bottom:10px;align-items:center">
+    <div style="position:relative;flex:1">
+      <svg style="position:absolute;left:12px;top:50%;transform:translateY(-50%);width:15px;height:15px;color:var(--text3)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" id="search-input" placeholder="Buscar transações..." oninput="renderMainList()" style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:11px 12px 11px 36px;font-size:14px;font-family:inherit;color:var(--text);outline:none">
+    </div>
+    <button onclick="toggleFiltroValor()" style="width:42px;height:42px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--text2)" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4h18M7 8h10M11 12h2"/></svg>
+    </button>
+  </div>
+
+  <!-- Filtro valor (oculto por padrão) -->
+  <div id="filtro-valor-wrap" style="display:none;gap:8px;margin-bottom:10px;align-items:center">
+    <div style="display:flex;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px;flex:1">
       <span style="font-size:11px;color:var(--text3);white-space:nowrap">De R$</span>
       <input type="number" id="filter-min" placeholder="0" oninput="renderMainList()" style="width:100%;background:none;border:none;font-size:13px;font-family:inherit;color:var(--text);outline:none;text-align:right">
     </div>
-    <div style="display:flex;align-items:center;gap:4px;background:var(--surface);border-radius:var(--radius);padding:8px 12px;flex:1;box-shadow:var(--shadow)">
+    <div style="display:flex;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px;flex:1">
       <span style="font-size:11px;color:var(--text3);white-space:nowrap">Até R$</span>
       <input type="number" id="filter-max" placeholder="∞" oninput="renderMainList()" style="width:100%;background:none;border:none;font-size:13px;font-family:inherit;color:var(--text);outline:none;text-align:right">
     </div>
-    <button onclick="clearValorFilter()" style="background:none;border:none;color:var(--text3);font-size:11px;font-weight:600;cursor:pointer;padding:4px 6px;font-family:inherit;white-space:nowrap">Limpar</button>
+    <button onclick="clearValorFilter()" style="background:none;border:none;color:var(--text3);font-size:11px;font-weight:600;cursor:pointer;padding:4px 6px;font-family:inherit;white-space:nowrap">✕</button>
   </div>
-  <div class="filters" id="period-filters">
+
+  <!-- Resumo 4 cards -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px">
+      <div style="font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;display:flex;align-items:center;gap:4px">
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"/></svg>Total
+      </div>
+      <div style="font-size:18px;font-weight:800;color:var(--text)" id="tl-total">0</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px">
+      <div style="font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;display:flex;align-items:center;gap:4px">
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="#F6465D" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6 6"/></svg>Despesas
+      </div>
+      <div style="font-size:18px;font-weight:800;color:#F6465D" id="tl-despesas">R$ 0</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px">
+      <div style="font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;display:flex;align-items:center;gap:4px">
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="#0ECB81" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>Receitas
+      </div>
+      <div style="font-size:18px;font-weight:800;color:#0ECB81" id="tl-receitas">R$ 0</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px">
+      <div style="font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;display:flex;align-items:center;gap:4px">
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="#4a7fd4" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>Saldo
+      </div>
+      <div style="font-size:18px;font-weight:800" id="tl-saldo">R$ 0</div>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filters" id="period-filters" style="margin-bottom:6px">
     <button class="pill active" onclick="setFilter('todos',this)">Todos</button>
     <button class="pill" onclick="setFilter('hoje',this)">Hoje</button>
     <button class="pill" onclick="setFilter('semana',this)">Semana</button>
@@ -439,19 +507,21 @@ select.setting-input{text-align:left;cursor:pointer;}
     <button class="pill" onclick="setFilter('saida',this)">Saídas</button>
     <button class="pill" onclick="setFilter('parcela',this)">Parcelas</button>
   </div>
-  <div class="filters" id="conta-filters"></div>
-  <div id="cat-filters" class="filters" style="margin-top:-6px"></div>
-  <div id="tag-filters" class="filters" style="margin-top:-6px"></div>
-  <div class="sec-hd"><div class="sec-title" id="filter-label">Todos os gastos</div><button class="btn-sm" onclick="clearAll()">Limpar tudo</button></div>
+  <div class="filters" id="conta-filters" style="margin-bottom:6px"></div>
+  <div id="cat-filters" class="filters" style="margin-bottom:6px"></div>
+  <div id="tag-filters" class="filters" style="margin-bottom:6px"></div>
+  <div class="sec-hd" style="margin-bottom:8px"><div class="sec-title" id="filter-label">Todos os gastos</div></div>
   <div class="list" id="main-list"><div class="empty">Nenhum gasto ainda.</div></div>
 </div>
 
 <!-- FUTURO -->
 <div class="page" id="page-futuro">
   <div style="padding-top:12px">
-    <div style="margin-bottom:16px">
-      <div style="font-size:24px;font-weight:800;letter-spacing:-.5px">Planejar</div>
-      <div style="font-size:13px;color:var(--text2);margin-top:2px">Compromissos futuros e reservas sazonais</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 0 8px">
+      <div>
+        <div style="font-size:20px;font-weight:800;letter-spacing:-.5px">Planejar</div>
+        <div style="font-size:12px;color:var(--text3);margin-top:2px">Compromissos e reservas</div>
+      </div>
     </div>
 
     <!-- Hero: total de compromissos -->
@@ -515,53 +585,85 @@ select.setting-input{text-align:left;cursor:pointer;}
 
 <!-- GRÁFICOS -->
 <div class="page" id="page-graficos">
-  <div class="page-header"><h2>Gráficos</h2></div>
-  <div class="chart-wrap">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-      <div class="chart-title" style="margin-bottom:0">Por categoria</div>
-      <div style="display:flex;gap:6px">
-        <button class="pill active" onclick="setPiePeriod('mes',this)" style="font-size:11px;padding:4px 10px">Este mês</button>
-        <button class="pill" onclick="setPiePeriod('todos',this)" style="font-size:11px;padding:4px 10px">Total</button>
+  <!-- Header -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 0 8px">
+    <div style="font-size:20px;font-weight:800;letter-spacing:-.5px">Análise</div>
+  </div>
+
+  <!-- Pills navegação -->
+  <div class="filters" style="margin-bottom:16px">
+    <button class="pill active" onclick="setGrafTab('categorias',this)">Categorias</button>
+    <button class="pill" onclick="setGrafTab('evolucao',this)">Evolução</button>
+    <button class="pill" onclick="setGrafTab('comparativo',this)">Comparativo</button>
+    <button class="pill" onclick="setGrafTab('faturas',this)">Faturas</button>
+    <button class="pill" onclick="setGrafTab('relatorio',this)">Relatório</button>
+  </div>
+
+  <!-- Categorias -->
+  <div id="gtab-categorias">
+    <div class="chart-wrap">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div class="chart-title" style="margin-bottom:0">Por categoria</div>
+        <div style="display:flex;gap:6px">
+          <button class="pill active" onclick="setPiePeriod('mes',this)" style="font-size:11px;padding:4px 10px">Este mês</button>
+          <button class="pill" onclick="setPiePeriod('todos',this)" style="font-size:11px;padding:4px 10px">Total</button>
+        </div>
       </div>
+      <div class="pie-wrap"><canvas id="pieChart" width="110" height="110"></canvas><div class="pie-legend" id="pie-legend"></div></div>
     </div>
-    <div class="pie-wrap"><canvas id="pieChart" width="110" height="110"></canvas><div class="pie-legend" id="pie-legend"></div></div>
-  </div>
-  <div class="chart-wrap">
-    <div class="chart-title">Gastos por dia — este mês</div>
-    <div class="bar-chart" id="bar-chart"></div>
-  </div>
-  <div class="chart-wrap">
-    <div class="chart-title">Evolução mensal — últimos 6 meses</div>
-    <div id="evolucao-chart" style="display:flex;flex-direction:column;gap:8px"></div>
-  </div>
-  <div class="chart-wrap">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-      <div class="chart-title" style="margin-bottom:0">Comparativo</div>
-      <select id="comp-months" onchange="renderComparativo()" style="font-size:11px;background:var(--bg2);color:var(--text2);border-radius:6px;padding:4px 8px;font-family:inherit;outline:none"></select>
+    <div class="chart-wrap">
+      <div class="chart-title">Gastos por dia — este mês</div>
+      <div class="bar-chart" id="bar-chart"></div>
     </div>
-    <div class="comp-header">
-      <span>Categoria</span>
-      <div style="display:flex;gap:12px"><span id="comp-h-prev" style="min-width:60px;text-align:right"></span><span id="comp-h-cur" style="min-width:60px;text-align:right"></span><span style="min-width:42px;text-align:right">Var.</span></div>
+  </div>
+
+  <!-- Evolução -->
+  <div id="gtab-evolucao" style="display:none">
+    <div class="chart-wrap">
+      <div class="chart-title">Evolução mensal — últimos 6 meses</div>
+      <div id="evolucao-chart" style="display:flex;flex-direction:column;gap:8px"></div>
     </div>
-    <div id="comp-list"></div>
   </div>
-  <div class="chart-wrap">
-    <div class="chart-title">Histórico de faturas pagas</div>
-    <div id="fat-hist-list"><div class="empty">Nenhuma fatura paga ainda.</div></div>
+
+  <!-- Comparativo -->
+  <div id="gtab-comparativo" style="display:none">
+    <div class="chart-wrap">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div class="chart-title" style="margin-bottom:0">Comparativo</div>
+        <select id="comp-months" onchange="renderComparativo()" style="font-size:11px;background:var(--bg2);color:var(--text2);border-radius:6px;padding:4px 8px;font-family:inherit;outline:none;border:1px solid var(--border)"></select>
+      </div>
+      <div class="comp-header">
+        <span>Categoria</span>
+        <div style="display:flex;gap:12px"><span id="comp-h-prev" style="min-width:60px;text-align:right"></span><span id="comp-h-cur" style="min-width:60px;text-align:right"></span><span style="min-width:42px;text-align:right">Var.</span></div>
+      </div>
+      <div id="comp-list"></div>
+    </div>
   </div>
-  <div class="chart-wrap">
-    <div class="chart-title">Relatório do mês</div>
-    <div id="relatorio"></div>
-    <button class="export-btn" onclick="exportCSV()" style="margin-top:12px;margin-bottom:8px">
-      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-      Exportar CSV
-    </button>
+
+  <!-- Faturas -->
+  <div id="gtab-faturas" style="display:none">
+    <div class="chart-wrap">
+      <div class="chart-title">Histórico de faturas pagas</div>
+      <div id="fat-hist-list"><div class="empty">Nenhuma fatura paga ainda.</div></div>
+    </div>
+  </div>
+
+  <!-- Relatório -->
+  <div id="gtab-relatorio" style="display:none">
+    <div class="chart-wrap">
+      <div class="chart-title">Relatório do mês</div>
+      <div id="relatorio"></div>
+      <button class="export-btn" onclick="exportCSV()" style="margin-top:12px;margin-bottom:8px">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        Exportar CSV
+      </button>
+    </div>
   </div>
 </div>
 
 <!-- CONFIG -->
 <div class="page" id="page-config">
-  <div class="page-header"><h2>Configurações</h2></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 0 12px"><div style="font-size:20px;font-weight:800;letter-spacing:-.5px">Configurações</div></div>
   <div class="setting-group">
     <div class="setting-row"><div><div class="setting-label">Orçamento mensal</div><div class="setting-sub">Limite total de gastos</div></div><input class="setting-input" type="number" id="cfg-budget" placeholder="0" onchange="saveCfg()"></div>
     <div class="setting-row"><div><div class="setting-label">Conta padrão</div><div class="setting-sub">Usada ao registrar</div></div><select class="setting-input" id="cfg-conta" onchange="saveCfg()"></select></div>
@@ -1623,6 +1725,12 @@ function setFilter(f,el){
   renderMainList();
 }
 function setTagFilter(t,el){tagFilter=tagFilter===t?null:t;document.querySelectorAll('#tag-filters .pill').forEach(p=>p.classList.remove('active'));if(tagFilter)el.classList.add('active');renderMainList();}
+function toggleFiltroValor(){
+  const wrap=document.getElementById('filtro-valor-wrap');
+  if(!wrap)return;
+  wrap.style.display=wrap.style.display==='none'?'flex':'none';
+}
+
 function clearValorFilter(){
   const mn=document.getElementById('filter-min');
   const mx=document.getElementById('filter-max');
@@ -1976,25 +2084,51 @@ function renderAll(){
   const vencidos=expenses.filter(e=>e.status==='vencido');
   const totalPendente=pendentes.reduce((s,e)=>s+(e.valor||0),0);
 
+  // Hero — novos IDs Pierre
   const saldoEl=document.getElementById('h-saldo');
-  if(saldoEl){saldoEl.textContent=fmt(Math.abs(monSaldo));saldoEl.style.color=monSaldo>=0?'white':'#F6465D';}
-  document.getElementById('h-entradas').textContent=fmt(monEntradas);
-  document.getElementById('h-mes').textContent=fmt(monSaidas);
-  document.getElementById('h-hoje').textContent=fmt(dayT);
-  document.getElementById('h-hoje-count').textContent=dayCount+' lançamento'+(dayCount!==1?'s':'');
-  document.getElementById('h-total-label').textContent=expenses.length+' registro'+(expenses.length!==1?'s':'');
+  if(saldoEl){saldoEl.textContent=fmt(Math.abs(monSaldo));saldoEl.style.color=monSaldo>=0?'#4a7fd4':'#F6465D';}
+  const entEl=document.getElementById('h-entradas');if(entEl)entEl.textContent=fmt(monEntradas);
+  const mesEl=document.getElementById('h-mes');if(mesEl)mesEl.textContent=fmt(monSaidas);
+  const despEl=document.getElementById('h-despesas-val');if(despEl)despEl.textContent=fmt(monSaidas);
+  const totEl=document.getElementById('h-total-count');if(totEl)totEl.textContent=getThisMonth().length;
+  const htlEl=document.getElementById('h-total-label');if(htlEl)htlEl.textContent=expenses.length+' registro'+(expenses.length!==1?'s':'');
+
+  // Conta ativa no header
+  const contaAtivaEl=document.getElementById('h-conta-ativa');
+  if(contaAtivaEl)contaAtivaEl.textContent=contaSliderFilter||cfg.conta||'Pessoal';
+
+  // Data hoje no sparkline
+  const hojeDiaEl=document.getElementById('h-hoje-dia');
+  if(hojeDiaEl)hojeDiaEl.textContent='hoje ('+today.getDate()+')';
+  const lastDayEl=document.getElementById('h-last-day');
+  if(lastDayEl)lastDayEl.textContent=new Date(today.getFullYear(),today.getMonth()+1,0).getDate();
+
+  // hoje
+  const hojeEl=document.getElementById('h-hoje');if(hojeEl)hojeEl.textContent=fmt(dayT);
+  const hojeCountEl=document.getElementById('h-hoje-count');if(hojeCountEl)hojeCountEl.textContent=dayCount+' lançamento'+(dayCount!==1?'s':'');
 
   // Parcelas home card
-  document.getElementById('h-parcelas-val').textContent=totalPendente>0?fmtS(totalPendente):'Nenhuma';
+  const hpvEl=document.getElementById('h-parcelas-val');if(hpvEl)hpvEl.textContent=totalPendente>0?fmtS(totalPendente):'Nenhuma';
   const countLabel=vencidos.length>0
     ? `⚠ ${vencidos.length} vencida${vencidos.length!==1?'s':''} · ${pendentes.length} total`
     : pendentes.length>0?pendentes.length+' parcela'+(pendentes.length!==1?'s':''):'Tudo quitado ✓';
-  document.getElementById('h-parcelas-count').textContent=countLabel;
-  document.getElementById('h-parcelas-count').style.color=vencidos.length>0?'var(--red)':pendentes.length>0?'var(--text3)':'var(--green-val)';
-  document.getElementById('h-parcelas-val').style.color=vencidos.length>0?'var(--red)':'#A78BFA';
+  const hpcEl=document.getElementById('h-parcelas-count');if(hpcEl){hpcEl.textContent=countLabel;hpcEl.style.color=vencidos.length>0?'var(--red)':pendentes.length>0?'var(--text3)':'var(--green-val)';}
+  if(hpvEl)hpvEl.style.color=vencidos.length>0?'var(--red)':'#A78BFA';
 
   const vsEl=document.getElementById('h-vs-label');
-  if(vsEl){if(prevSaidas>0){const diff=monSaidas-prevSaidas,pct=Math.abs(Math.round(diff/prevSaidas*100));vsEl.textContent=(diff>=0?'▲ +':'▼ -')+pct+'%';vsEl.style.color=diff>=0?'#F6465D':'#34D399';}else{vsEl.textContent='—';}}
+  const vsSubEl=document.getElementById('h-vs-sub');
+  if(vsEl){
+    if(prevSaidas>0){
+      const diff=monSaidas-prevSaidas,pct=Math.abs(Math.round(diff/prevSaidas*100));
+      vsEl.textContent=(diff>=0?'+':'-')+pct+'%';
+      vsEl.style.color=diff>=0?'#F6465D':'#34D399';
+      vsEl.closest('div').style.background=diff>=0?'rgba(246,70,93,0.12)':'rgba(14,203,129,0.12)';
+      if(vsSubEl)vsSubEl.textContent='vs R$ '+Number(prevSaidas).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+' mês anterior';
+    } else {
+      vsEl.textContent='0.0%';
+      if(vsSubEl)vsSubEl.textContent='vs R$ 0,00 mês anterior';
+    }
+  }
 
   renderSparkline();
 
@@ -2024,26 +2158,88 @@ function setContaSlider(c){
 
 function renderSparkline(){
   const canvas=document.getElementById('sparkline');if(!canvas)return;
-  const today=new Date(),daysInMonth=new Date(today.getFullYear(),today.getMonth()+1,0).getDate();
+  const today=new Date();
+  const daysInMonth=new Date(today.getFullYear(),today.getMonth()+1,0).getDate();
+  const prevMo=today.getMonth()===0?12:today.getMonth();
+  const prevYr=today.getMonth()===0?today.getFullYear()-1:today.getFullYear();
+  const daysInPrevMonth=new Date(prevYr,prevMo,0).getDate();
+
+  // Mês atual acumulado
   const byDay={};
-  getThisMonth().forEach(e=>{const d=parseInt((e.data||'').split('/')[0]);if(d)byDay[d]=(byDay[d]||0)+(e.valor||0);});
-  const vals=Array.from({length:daysInMonth},(_,i)=>byDay[i+1]||0);
-  const max=Math.max(...vals,1),W=canvas.offsetWidth||320,H=40;
-  canvas.width=W;canvas.height=H;
-  const ctx=canvas.getContext('2d'),step=W/(vals.length-1||1);
+  getThisMonth().filter(e=>e.tipo!=='entrada').forEach(e=>{
+    const d=parseInt((e.data||'').split('/')[0]);if(d)byDay[d]=(byDay[d]||0)+(e.valor||0);
+  });
+  // Acumulado (soma progressiva)
+  const vals=[];let acc=0;
+  for(let i=1;i<=daysInMonth;i++){acc+=(byDay[i]||0);vals.push(acc);}
+
+  // Mês anterior acumulado
+  const byDayPrev={};
+  getMonthExp(prevMo,prevYr).filter(e=>e.tipo!=='entrada').forEach(e=>{
+    const d=parseInt((e.data||'').split('/')[0]);if(d)byDayPrev[d]=(byDayPrev[d]||0)+(e.valor||0);
+  });
+  const valsPrev=[];let accP=0;
+  for(let i=1;i<=daysInPrevMonth;i++){accP+=(byDayPrev[i]||0);valsPrev.push(accP);}
+
+  const allVals=[...vals,...valsPrev];
+  const max=Math.max(...allVals,1);
+  const W=canvas.offsetWidth||320,H=60;
+  canvas.width=W*2;canvas.height=H*2;
+  canvas.style.width=W+'px';canvas.style.height=H+'px';
+  const ctx=canvas.getContext('2d');
+  ctx.scale(2,2);
   ctx.clearRect(0,0,W,H);
-  ctx.beginPath();ctx.moveTo(0,H);
-  vals.forEach((v,i)=>ctx.lineTo(i*step,H-(v/max)*(H-4)-2));
-  ctx.lineTo((vals.length-1)*step,H);ctx.closePath();
-  ctx.fillStyle='rgba(255,255,255,0.08)';ctx.fill();
+
+  const todayDay=today.getDate();
+
+  // Linha mês passado (tracejada, cinza)
+  if(valsPrev.some(v=>v>0)){
+    ctx.beginPath();
+    const stepP=W/(daysInPrevMonth-1||1);
+    valsPrev.forEach((v,i)=>{
+      const x=i*stepP,y=H-(v/max)*(H-8)-4;
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    });
+    ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1.5;
+    ctx.setLineDash([4,4]);ctx.stroke();ctx.setLineDash([]);
+  }
+
+  // Área preenchida mês atual
+  const stepC=W/(daysInMonth-1||1);
   ctx.beginPath();
-  vals.forEach((v,i)=>i===0?ctx.moveTo(0,H-(v/max)*(H-4)-2):ctx.lineTo(i*step,H-(v/max)*(H-4)-2));
-  ctx.strokeStyle='rgba(255,255,255,0.5)';ctx.lineWidth=1.5;ctx.stroke();
+  ctx.moveTo(0,H);
+  vals.slice(0,todayDay).forEach((v,i)=>ctx.lineTo(i*stepC,H-(v/max)*(H-8)-4));
+  ctx.lineTo((todayDay-1)*stepC,H);ctx.closePath();
+  ctx.fillStyle='rgba(246,70,93,0.08)';ctx.fill();
+
+  // Linha mês atual (vermelha)
+  ctx.beginPath();
+  vals.slice(0,todayDay).forEach((v,i)=>{
+    const x=i*stepC,y=H-(v/max)*(H-8)-4;
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  });
+  ctx.strokeStyle='#F6465D';ctx.lineWidth=2;ctx.stroke();
+
+  // Ponto no dia atual
+  const cx=(todayDay-1)*stepC,cy=H-(vals[todayDay-1]/max)*(H-8)-4;
+  ctx.beginPath();ctx.arc(cx,cy,4,0,Math.PI*2);
+  ctx.fillStyle='#F6465D';ctx.fill();
+  ctx.beginPath();ctx.arc(cx,cy,2,0,Math.PI*2);
+  ctx.fillStyle='#fff';ctx.fill();
 }
 
 function renderMainList(){
   renderTagFilters();
   renderCatFilters();
+  // Atualiza cards resumo da aba Transações
+  const filtrados=getFiltered();
+  const desp=filtrados.filter(e=>e.tipo!=='entrada').reduce((s,e)=>s+(e.valor||0),0);
+  const rec=filtrados.filter(e=>e.tipo==='entrada').reduce((s,e)=>s+(e.valor||0),0);
+  const saldo=rec-desp;
+  const tlTotal=document.getElementById('tl-total');if(tlTotal)tlTotal.textContent=filtrados.length;
+  const tlDesp=document.getElementById('tl-despesas');if(tlDesp)tlDesp.textContent=fmtS(desp);
+  const tlRec=document.getElementById('tl-receitas');if(tlRec)tlRec.textContent=fmtS(rec);
+  const tlSaldo=document.getElementById('tl-saldo');if(tlSaldo){tlSaldo.textContent=fmtS(Math.abs(saldo));tlSaldo.style.color=saldo>=0?'#4a7fd4':'#F6465D';}
   const f=getFiltered();
   document.getElementById('main-list').innerHTML=f.length===0?'<div class="empty">Nenhum lançamento neste período.</div>':f.map(e=>itemHTML(e)).join('');
 }
@@ -2692,6 +2888,18 @@ function toggleFuturoMonth(key){
 }
 
 // ===== CHARTS =====
+function setGrafTab(tab, el){
+  ['categorias','evolucao','comparativo','faturas','relatorio'].forEach(t=>{
+    const el2=document.getElementById('gtab-'+t);
+    if(el2)el2.style.display=t===tab?'block':'none';
+  });
+  document.querySelectorAll('#page-graficos .filters .pill').forEach(p=>p.classList.remove('active'));
+  if(el)el.classList.add('active');
+  if(tab==='comparativo')renderComparativo();
+  if(tab==='faturas')renderFatHist();
+  if(tab==='relatorio'){renderRelatorio();}
+}
+
 function setPiePeriod(p,el){piePeriod=p;document.querySelectorAll('#page-graficos .pill').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderCharts();}
 
 function renderEvolucaoMensal(){
@@ -3113,7 +3321,7 @@ function exportCSV(){
 let privacyOn=false;
 function togglePrivacy(){
   privacyOn=!privacyOn;
-  ['h-saldo','h-entradas','h-mes','h-hoje','h-hoje-count','h-vs-label','h-parcelas-val','conta-slider','home-list','sparkline','h-total-label'].forEach(id=>{
+  ['h-saldo','h-entradas','h-mes','h-despesas-val','h-total-count','h-hoje','h-hoje-count','h-vs-label','h-parcelas-val','conta-slider','home-list','sparkline','h-total-label'].forEach(id=>{
     const el=document.getElementById(id);
     if(el){privacyOn?el.classList.add('privacy-hide'):el.classList.remove('privacy-hide');}
   });
