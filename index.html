@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -431,7 +430,18 @@ select.setting-input{text-align:left;cursor:pointer;}
 <!-- LANÇAMENTO RÁPIDO -->
 <div style="padding:0;margin-bottom:12px;margin-top:20px">
   <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px;margin-top:0">Lançamento rápido</div>
-  <div style="display:flex;gap:8px;overflow-x:scroll;padding:2px 2px 6px 2px;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-padding-left:2px" id="quick-cats"></div>
+  <div style="display:flex;gap:8px;overflow-x:scroll;padding:2px 2px 6px 2px;scrollbar-width:none;-webkit-overflow-scrolling:touch" id="quick-cats">
+    <button onclick="openQuickLanc('Investimentos')" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px 10px;cursor:pointer;font-family:inherit;flex-shrink:0;min-width:56px"><span style="font-size:40px;line-height:1">💰</span><span style="font-size:10px;font-weight:600;color:var(--text2);white-space:nowrap">Investimentos</span></button>
+    <button onclick="openQuickLanc('Educação')" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px 10px;cursor:pointer;font-family:inherit;flex-shrink:0;min-width:56px"><span style="font-size:40px;line-height:1">📚</span><span style="font-size:10px;font-weight:600;color:var(--text2);white-space:nowrap">Educação</span></button>
+    <button onclick="openQuickLanc('Mercado')" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px 10px;cursor:pointer;font-family:inherit;flex-shrink:0;min-width:56px"><span style="font-size:40px;line-height:1">🛒</span><span style="font-size:10px;font-weight:600;color:var(--text2);white-space:nowrap">Mercado</span></button>
+    <button onclick="openQuickLanc('Alimentação')" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px 10px;cursor:pointer;font-family:inherit;flex-shrink:0;min-width:56px"><span style="font-size:40px;line-height:1">🍔</span><span style="font-size:10px;font-weight:600;color:var(--text2);white-space:nowrap">Alimentação</span></button>
+    <button onclick="openQuickLanc('Transporte')" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px 10px;cursor:pointer;font-family:inherit;flex-shrink:0;min-width:56px"><span style="font-size:40px;line-height:1">🚗</span><span style="font-size:10px;font-weight:600;color:var(--text2);white-space:nowrap">Transporte</span></button>
+    <button onclick="openQuickLanc('Lazer')" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px 10px;cursor:pointer;font-family:inherit;flex-shrink:0;min-width:56px"><span style="font-size:40px;line-height:1">🎮</span><span style="font-size:10px;font-weight:600;color:var(--text2);white-space:nowrap">Lazer</span></button>
+    <button onclick="openQuickLanc('Moradia')" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px 10px;cursor:pointer;font-family:inherit;flex-shrink:0;min-width:56px"><span style="font-size:40px;line-height:1">🏠</span><span style="font-size:10px;font-weight:600;color:var(--text2);white-space:nowrap">Moradia</span></button>
+    <button onclick="openQuickLanc('Saúde')" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px 10px;cursor:pointer;font-family:inherit;flex-shrink:0;min-width:56px"><span style="font-size:40px;line-height:1">💊</span><span style="font-size:10px;font-weight:600;color:var(--text2);white-space:nowrap">Saúde</span></button>
+    <button onclick="openQuickLanc('Roupas')" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px 10px;cursor:pointer;font-family:inherit;flex-shrink:0;min-width:56px"><span style="font-size:40px;line-height:1">👕</span><span style="font-size:10px;font-weight:600;color:var(--text2);white-space:nowrap">Roupas</span></button>
+    <button onclick="openQuickLanc('Presentes')" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px 10px;cursor:pointer;font-family:inherit;flex-shrink:0;min-width:56px;margin-right:8px"><span style="font-size:40px;line-height:1">🎁</span><span style="font-size:10px;font-weight:600;color:var(--text2);white-space:nowrap">Presentes</span></button>
+  </div>
 </div>
 
 <!-- FATURAS DE CARTÃO -->
