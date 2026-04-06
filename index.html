@@ -1410,11 +1410,14 @@ function openQuickLanc(cat){
   setTimeout(()=>document.getElementById('quick-valor').focus(),100);
 }
 function confirmQuickLanc(tipo='saida'){
-  const val=extractVal(document.getElementById('quick-valor').value||'')||0;
+  const rawInput=document.getElementById('quick-valor').value||'';
+  const val=extractVal(rawInput)||0;
   if(!val)return;
+  // Usa cleanDesc igual ao lançamento normal
+  const desc=cleanDesc(rawInput)||_quickCat;
   expenses.unshift({
     id:Date.now()+Math.random(),
-    desc:_quickCat,valor:val,categoria:_quickCat,
+    desc,valor:val,categoria:_quickCat,
     conta:cfg.conta||contas[0]||'Pessoal',
     data:todayStr(),obs:'',tags:[],status:'efetivada',tipo,pagto:''
   });
