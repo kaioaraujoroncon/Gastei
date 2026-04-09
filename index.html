@@ -9,6 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="Gastou, Kaio?">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%231240A8'/%3E%3Ctext x='50' y='68' font-size='58' text-anchor='middle' fill='white' font-family='IBM Plex Sans,sans-serif' font-weight='700'%3E%24%3C/text%3E%3C/svg%3E">
 <title>Gastou, Kaio?</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--accent:#3461c1;--accent-bright:#1a3a6b;--accent-dark:#2d5fa3;--accent-text:#FFFFFF;--red:#F6465D;--green-val:#0ECB81;--orange:#FBBF24;--purple:#8B5CF6;--bg:#050508;--bg2:#0c0c12;--surface:#111118;--surface2:#16161f;--border:rgba(255,255,255,0.06);--text:#E8EAF0;--text2:#7a8499;--text3:#3d4558;--radius:14px;--radius-sm:10px;--shadow:0 4px 24px rgba(0,0,0,0.7);}
@@ -991,6 +992,88 @@ select.setting-input{text-align:left;cursor:pointer;}
 <script>
 // ===== CONSTANTS & STATE =====
 const KEY='gastei_v4',CFG_KEY='gastei_cfg_v2',RECUR_KEY='gastei_recur_v1',CONTAS_KEY='gastei_contas_v1',CATS_KEY='gastei_cats_v1',PAGTO_KEY='gastei_pagto_v1',AVULSO_KEY='gastei_avulso_v1',SAZONAL_KEY='gastei_sazonal_v1',FAT_HIST_KEY='gastei_fat_hist_v1';
+
+// ── SUPABASE ──
+const SB_URL='https://cbfqczriwzkrsoeudsyi.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNiZnFjenJpd3prcnNvZXVkc3lpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MzA2MjksImV4cCI6MjA5MTAwNjYyOX0.GGhkQP9UqsCtVQAiU4nOViTKgFCJQz8NqMbCpVPeiRo';
+let sb=null;
+try{sb=supabase.createClient(SB_URL,SB_KEY);}catch(e){console.warn('Supabase offline',e);}
+
+// Sync para Supabase (não bloqueia UI)
+async function sbSync(table,data){
+  if(!sb)return;
+  try{
+    if(table==='expenses'){
+      // Upsert em lote
+      const rows=data.map(e=>({
+        id:String(e.id),descricao:e.desc||'',valor:e.valor||0,
+        categoria:e.categoria||'Outros',conta:e.conta||'Pessoal',
+        pagto:e.pagto||'',data:e.data||'',tipo:e.tipo||'saida',
+        obs:e.obs||'',tags:e.tags||[],status:e.status||'efetivada',
+        parcela_num:e.parcelaNum||null,parcela_total:e.parcelaTotal||null,
+        group_id:e.groupId||null,group_desc:e.groupDesc||null,recur_id:e.recurId||null
+      }));
+      await sb.from('expenses').upsert(rows,{onConflict:'id'});
+    } else if(table==='config'){
+      await sb.from('config').upsert({id:1,data},{onConflict:'id'});
+    } else if(table==='recurrents'){
+      await sb.from('recurrents').upsert({id:'main',data});
+    } else if(table==='contas'){
+      await sb.from('contas').upsert({id:'main',data});
+    } else if(table==='pagamentos'){
+      await sb.from('pagamentos').upsert({id:'main',data});
+    } else if(table==='avulsos'){
+      await sb.from('avulsos').upsert({id:'main',data});
+    } else if(table==='sazonais'){
+      await sb.from('sazonais').upsert({id:'main',data});
+    } else if(table==='fat_hist'){
+      await sb.from('fat_hist').upsert({id:'main',data});
+    }
+  }catch(e){console.warn('sbSync erro:',table,e);}
+}
+
+// Carrega dados do Supabase (com fallback para localStorage)
+async function sbLoad(){
+  if(!sb)return false;
+  try{
+    // Expenses
+    const{data:exp}=await sb.from('expenses').select('*').order('created_at',{ascending:false});
+    if(exp&&exp.length>0){
+      expenses=exp.map(e=>({
+        id:e.id,desc:e.descricao,valor:e.valor,categoria:e.categoria,
+        conta:e.conta,pagto:e.pagto,data:e.data,tipo:e.tipo,
+        obs:e.obs,tags:e.tags||[],status:e.status,
+        parcelaNum:e.parcela_num,parcelaTotal:e.parcela_total,
+        groupId:e.group_id,groupDesc:e.group_desc,recurId:e.recur_id
+      }));
+      localStorage.setItem(KEY,JSON.stringify(expenses));
+    }
+    // Config e demais tabelas
+    const tbls=[
+      {t:'recurrents',k:'recurrents',v:recurrents},
+      {t:'contas',k:'contas',v:contas},
+      {t:'pagamentos',k:'pagamentos',v:pagamentos},
+      {t:'avulsos',k:'avulsos',v:avulsos},
+      {t:'sazonais',k:'sazonais',v:sazonais},
+      {t:'fat_hist',k:'fat_hist',v:fatHist},
+    ];
+    for(const{t,k}of tbls){
+      const{data:d}=await sb.from(t).select('data').eq('id','main').single();
+      if(d&&d.data){
+        if(k==='recurrents')recurrents=d.data;
+        else if(k==='contas')contas=d.data;
+        else if(k==='pagamentos')pagamentos=d.data;
+        else if(k==='avulsos')avulsos=d.data;
+        else if(k==='sazonais')sazonais=d.data;
+        else if(k==='fat_hist')fatHist=d.data;
+      }
+    }
+    const{data:cfgData}=await sb.from('config').select('data').eq('id',1).single();
+    if(cfgData&&cfgData.data)cfg={...cfg,...cfgData.data};
+    console.log('✅ Dados carregados do Supabase');
+    return true;
+  }catch(e){console.warn('sbLoad erro:',e);return false;}
+}
 const DEFAULT_PAGTOS=['Pix','Dinheiro','Débito','Crédito'];
 const DEFAULT_CATS=['Alimentação','Transporte','Mercado','Saúde','Lazer','Moradia','Roupas','Educação','Presentes','Outros'];
 const PIE_COLORS=['#1a3a6b','#0ECB81','#F6465D','#FBBF24','#8B5CF6','#06B6D4','#F97316','#EC4899','#84CC16','#A78BFA'];
@@ -1246,16 +1329,21 @@ function parseMsg(text){
 }
 
 // ===== STORAGE =====
-function save(){try{localStorage.setItem(KEY,JSON.stringify(expenses));}catch(e){}}
+function save(){
+  try{localStorage.setItem(KEY,JSON.stringify(expenses));}catch(e){}
+  sbSync('expenses',expenses);
+}
 function saveCfg(){
   cfg.budget=parseFloat(document.getElementById('cfg-budget').value)||0;
   cfg.conta=document.getElementById('cfg-conta').value;
   cfg.diaParcela=parseInt(document.getElementById('cfg-dia-parcela').value)||10;
   cfg.alertaDias=parseInt(document.getElementById('cfg-alerta-dias').value)||3;
-  localStorage.setItem(CFG_KEY,JSON.stringify(cfg));renderAll();
+  localStorage.setItem(CFG_KEY,JSON.stringify(cfg));
+  sbSync('config',cfg);
+  renderAll();
 }
-function saveRecurData(){localStorage.setItem(RECUR_KEY,JSON.stringify(recurrents));}
-function saveContasData(){localStorage.setItem(CONTAS_KEY,JSON.stringify(contas));}
+function saveRecurData(){localStorage.setItem(RECUR_KEY,JSON.stringify(recurrents));sbSync('recurrents',recurrents);}
+function saveContasData(){localStorage.setItem(CONTAS_KEY,JSON.stringify(contas));sbSync('contas',contas);}
 
 
 // ===== SWIPE TO ACTION =====
@@ -1654,6 +1742,7 @@ function confirmVoice(){
 }
 
 function load(){
+  // Carrega localStorage primeiro (instantâneo)
   try{const r=localStorage.getItem(KEY);if(r)expenses=JSON.parse(r);}catch(e){expenses=[];}
   try{const r=localStorage.getItem(CFG_KEY);if(r)cfg={...cfg,...JSON.parse(r)};}catch(e){}
   try{const r=localStorage.getItem(RECUR_KEY);if(r)recurrents=JSON.parse(r);}catch(e){recurrents=[];}
@@ -1663,6 +1752,8 @@ function load(){
   try{const r=localStorage.getItem(AVULSO_KEY);if(r)avulsos=JSON.parse(r);}catch(e){avulsos=[];}
   try{const r=localStorage.getItem(SAZONAL_KEY);if(r)sazonais=JSON.parse(r);}catch(e){sazonais=[];}
   try{const r=localStorage.getItem(FAT_HIST_KEY);if(r)fatHist=JSON.parse(r);}catch(e){fatHist=[];}
+  // Depois sincroniza com Supabase em background
+  sbLoad().then(ok=>{if(ok){renderAll();renderFuturo();}});
   checkAutoEfetivar();
   applyRecurrents();
   document.getElementById('cfg-budget').value=cfg.budget||'';
@@ -1979,7 +2070,7 @@ function confirmPagarFatura(){
     nome,year,month,valor,
     dataPagamento:todayStr(),
   });
-  localStorage.setItem(FAT_HIST_KEY,JSON.stringify(fatHist));
+  localStorage.setItem(FAT_HIST_KEY,JSON.stringify(fatHist));sbSync('fat_hist',fatHist);
 
   closeModal('fat-confirm-modal');
   renderFaturas();
@@ -2439,7 +2530,7 @@ const SAZ_ICONS={
   'Seguro':'🛡️','Natal/Presentes':'🎁','custom':'⭐'
 };
 
-function saveSazonaisData(){localStorage.setItem(SAZONAL_KEY,JSON.stringify(sazonais));}
+function saveSazonaisData(){localStorage.setItem(SAZONAL_KEY,JSON.stringify(sazonais));sbSync('sazonais',sazonais);}
 
 let editSazId=null, sazModo='A';
 
@@ -2628,7 +2719,7 @@ function renderSazonais(){
 }
 
 // ===== AVULSOS (compromissos avulsos) =====
-function saveAvulsosData(){localStorage.setItem(AVULSO_KEY,JSON.stringify(avulsos));}
+function saveAvulsosData(){localStorage.setItem(AVULSO_KEY,JSON.stringify(avulsos));sbSync('avulsos',avulsos);}
 
 let editAvulsoId=null;
 function openAvulsoModal(id){
@@ -3174,14 +3265,14 @@ function savePagto(){
     if(allPagtos().includes(nome)){alert('Já existe.');return;}
     pagamentos.push(obj);
   }
-  localStorage.setItem(PAGTO_KEY,JSON.stringify(pagamentos));
+  localStorage.setItem(PAGTO_KEY,JSON.stringify(pagamentos));sbSync('pagamentos',pagamentos);
   populatePagtoSelects();closeModal('pagto-modal');renderPagtos();
 }
 function deletePagto(id){
   const nome=pagtoNome(pagamentos[id]);
   if(!confirm('Remover "'+nome+'"?'))return;
   pagamentos.splice(id,1);
-  localStorage.setItem(PAGTO_KEY,JSON.stringify(pagamentos));
+  localStorage.setItem(PAGTO_KEY,JSON.stringify(pagamentos));sbSync('pagamentos',pagamentos);
   populatePagtoSelects();renderPagtos();
 }
 const TIPO_LABEL={credito:'Crédito',debito:'Débito',pix:'Pix',dinheiro:'Dinheiro',boleto:'Boleto',outro:'Outro'};
@@ -3302,10 +3393,10 @@ function importBackup(event){
       localStorage.setItem(RECUR_KEY,JSON.stringify(recurrents));
       localStorage.setItem(CONTAS_KEY,JSON.stringify(contas));
       localStorage.setItem(CATS_KEY,JSON.stringify(customCats));
-      localStorage.setItem(PAGTO_KEY,JSON.stringify(pagamentos));
+      localStorage.setItem(PAGTO_KEY,JSON.stringify(pagamentos));sbSync('pagamentos',pagamentos);
       localStorage.setItem(AVULSO_KEY,JSON.stringify(avulsos));
       localStorage.setItem(SAZONAL_KEY,JSON.stringify(sazonais));
-      localStorage.setItem(FAT_HIST_KEY,JSON.stringify(fatHist));
+      localStorage.setItem(FAT_HIST_KEY,JSON.stringify(fatHist));sbSync('fat_hist',fatHist);
       // Re-init UI
       checkAutoEfetivar();
       document.getElementById('cfg-budget').value=cfg.budget||'';
@@ -3368,7 +3459,7 @@ function removerFaturaPaga(key,nome,year,month){
   localStorage.removeItem(key);
   // Remove do histórico também
   fatHist=fatHist.filter(f=>!(f.nome===nome&&f.year===year&&f.month===month));
-  localStorage.setItem(FAT_HIST_KEY,JSON.stringify(fatHist));
+  localStorage.setItem(FAT_HIST_KEY,JSON.stringify(fatHist));sbSync('fat_hist',fatHist);
   renderFatPagasCfg();
   renderFatHist();
   renderFaturas();
