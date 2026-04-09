@@ -1637,8 +1637,15 @@ function showPinOverlay(mode){
   else if(mode==='set')label.textContent='Crie um PIN de 4 dígitos';
   else if(mode==='confirm')label.textContent='Confirme o PIN';
   document.getElementById('pin-overlay').classList.add('visible');
-  if(mode==='unlock')initBioBtn();
-  else{const b=document.getElementById('pin-bio-btn');if(b)b.style.display='none';}
+  if(mode==='unlock'){
+    // Dispara Face ID automaticamente se já cadastrado
+    if(localStorage.getItem(BIO_KEY)==='1'&&localStorage.getItem(BIO_CRED_KEY)){
+      setTimeout(pinBio,500);
+    }
+    initBioBtn();
+  } else {
+    const b=document.getElementById('pin-bio-btn');if(b)b.style.display='none';
+  }
 }
 
 function hidePinOverlay(){
@@ -1800,10 +1807,7 @@ async function initBioBtn(){
   if(!avail){bioBtn.style.display='none';return;}
   // Ícone: Face ID se iOS, impressão digital caso contrário
   bioBtn.style.display='flex';
-  // Auto-trigger biometria se já tem cadastrado
-  if(localStorage.getItem(BIO_KEY)==='1'&&localStorage.getItem(BIO_CRED_KEY)){
-    setTimeout(pinBio,600);
-  }
+  // Mostra botão se disponível (auto-trigger já foi no showPinOverlay)
 }
 
 function pinSkip(){hidePinOverlay();}
