@@ -1706,20 +1706,30 @@ async function registerBio(){
   if(!(await isBioAvailable())){alert('Face ID/Touch ID não disponível neste dispositivo.');return false;}
   try{
     const challenge=crypto.getRandomValues(new Uint8Array(32));
+    // GitHub Pages usa subdomínio — rpId deve ser o hostname exato
+    const rpId=location.hostname;
+    console.log('WebAuthn rpId:',rpId);
     const cred=await navigator.credentials.create({publicKey:{
       challenge,
-      rp:{name:'Gastei',id:location.hostname},
-      user:{id:strToUint8('gastei-user'),name:'kaio',displayName:'Kaio'},
+      rp:{name:'Gastei',id:rpId},
+      user:{id:strToUint8('gastei-kaio-001'),name:'kaio',displayName:'Kaio'},
       pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],
-      authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required'},
-      timeout:60000
+      authenticatorSelection:{
+        authenticatorAttachment:'platform',
+        userVerification:'required',
+        residentKey:'preferred'
+      },
+      timeout:120000
     }});
     if(cred){
-      localStorage.setItem(BIO_CRED_KEY,JSON.stringify({id:uint8ToB64(cred.rawId)}));
+      localStorage.setItem(BIO_CRED_KEY,JSON.stringify({id:uint8ToB64(cred.rawId),rpId}));
       localStorage.setItem(BIO_KEY,'1');
       return true;
     }
-  }catch(e){console.warn('Registro bio falhou:',e);}
+  }catch(e){
+    console.error('Registro bio falhou:',e);
+    alert('Erro ao cadastrar Face ID: '+e.message);
+  }
   return false;
 }
 
@@ -1752,7 +1762,7 @@ async function pinBio(){
     const assertion=await navigator.credentials.get({publicKey:{
       challenge,
       timeout:60000,
-      rpId:location.hostname,
+      rpId:credData.rpId||location.hostname,
       allowCredentials:[{type:'public-key',id:b64ToUint8(credData.id)}],
       userVerification:'required'
     }});
@@ -1784,19 +1794,18 @@ function pinSkip(){hidePinOverlay();}
 function configurarPin(){
   isBioAvailable().then(avail=>{
     if(avail){
-      const hasBio=localStorage.getItem(BIO_KEY)==='1';
-      const msg=hasBio
-        ?'O que deseja fazer?\n1 - Reconfigurar PIN\n2 - Reconfigurar Face ID\n3 - Ambos'
-        :'O que deseja configurar?\n1 - PIN\n2 - Face ID\n3 - Ambos';
-      const choice=prompt(msg);
-      if(choice==='2'||choice==='3'){
-        localStorage.removeItem(BIO_CRED_KEY);
-        localStorage.removeItem(BIO_KEY);
-        registerBio().then(ok=>{
-          if(ok){localStorage.setItem(BIO_KEY,'1');alert('✅ Face ID configurado!');}
-        });
-      }
-      if(choice==='1'||choice==='3')showPinOverlay('set');
+      // Mostra modal de escolha customizado
+      const modal=document.createElement('div');
+      modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:99999;display:flex;align-items:center;justify-content:center;';
+      modal.innerHTML=`<div style="background:#111118;border:1px solid rgba(255,255,255,0.1);border-radius:18px;padding:24px;width:280px;text-align:center">
+        <div style="font-size:16px;font-weight:700;color:white;margin-bottom:6px">Segurança</div>
+        <div style="font-size:13px;color:#7a8499;margin-bottom:20px">O que deseja configurar?</div>
+        <button onclick="this.closest('div[style]').remove();showPinOverlay('set')" style="width:100%;padding:13px;background:#1a1a2e;border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:white;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:8px;font-family:inherit">🔢 Só PIN</button>
+        <button onclick="this.closest('div[style]').remove();localStorage.removeItem('${BIO_CRED_KEY}');localStorage.removeItem('${BIO_KEY}');registerBio().then(ok=>{if(ok){localStorage.setItem('${BIO_KEY}','1');alert('✅ Face ID cadastrado!');}})" style="width:100%;padding:13px;background:#1a1a2e;border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:white;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:8px;font-family:inherit">🔐 Só Face ID</button>
+        <button onclick="this.closest('div[style]').remove();localStorage.removeItem('${BIO_CRED_KEY}');localStorage.removeItem('${BIO_KEY}');registerBio().then(ok=>{if(ok){localStorage.setItem('${BIO_KEY}','1');}});showPinOverlay('set')" style="width:100%;padding:13px;background:#3461c1;border:none;border-radius:10px;color:white;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:12px;font-family:inherit">✅ PIN + Face ID</button>
+        <button onclick="this.closest('div[style]').remove()" style="background:none;border:none;color:#7a8499;font-size:13px;cursor:pointer;font-family:inherit">Cancelar</button>
+      </div>`;
+      document.body.appendChild(modal);
     } else {
       showPinOverlay('set');
     }
