@@ -915,7 +915,7 @@ select.setting-input{text-align:left;cursor:pointer;}
     <button class="pin-btn" onclick="pinInput('7')">7</button>
     <button class="pin-btn" onclick="pinInput('8')">8</button>
     <button class="pin-btn" onclick="pinInput('9')">9</button>
-    <button class="pin-btn" onclick="pinBio()" id="pin-bio-btn" style="font-size:22px">🔐</button>
+    <button class="pin-btn" onclick="pinBio()" id="pin-bio-btn" style="font-size:22px;display:none">🔐</button>
     <button class="pin-btn" onclick="pinInput('0')">0</button>
     <button class="pin-btn" onclick="pinDelete()" style="font-size:18px">⌫</button>
   </div>
@@ -1601,28 +1601,33 @@ let pinTemp='';
 
 function initPin(){
   const stored=localStorage.getItem(PIN_KEY);
-  // Update config button
   const btn=document.getElementById('pin-cfg-btn');
   if(btn)btn.textContent=stored?'Alterar':'Configurar';
-  if(!stored)return; // no pin set, skip
+  if(!stored)return; // sem PIN, libera
+  // Esconde todo o conteúdo até autenticar
+  document.querySelectorAll('.page,.nav').forEach(el=>el.style.visibility='hidden');
   showPinOverlay('unlock');
 }
 
 function showPinOverlay(mode){
-  pinMode=mode;pinBuffer='';pinTemp='';
+  const prevTemp=pinTemp; // preserva pinTemp ao ir para confirm
+  pinMode=mode;pinBuffer='';
+  if(mode!=='confirm')pinTemp=''; // só reseta temp se não for confirmação
+  else pinTemp=prevTemp; // restaura o temp para confirmar
   updatePinDots();
   const label=document.getElementById('pin-label');
   if(mode==='unlock')label.textContent='Digite seu PIN';
   else if(mode==='set')label.textContent='Crie um PIN de 4 dígitos';
   else if(mode==='confirm')label.textContent='Confirme o PIN';
   document.getElementById('pin-overlay').classList.add('visible');
-  // Show biometrics button if available
-  const bioBtn=document.getElementById('pin-bio-btn');
-  if(bioBtn)bioBtn.style.display=mode==='unlock'&&window.PublicKeyCredential?'flex':'none';
+  if(mode==='unlock')initBioBtn();
+  else{const b=document.getElementById('pin-bio-btn');if(b)b.style.display='none';}
 }
 
 function hidePinOverlay(){
   document.getElementById('pin-overlay').classList.remove('visible');
+  // Mostra conteúdo após autenticação
+  document.querySelectorAll('.page,.nav').forEach(el=>el.style.visibility='');
 }
 
 function updatePinDots(){
@@ -1677,26 +1682,126 @@ function pinSubmit(){
   }
 }
 
-async function pinBio(){
-  if(!window.PublicKeyCredential)return;
+const BIO_KEY='gastei_bio_v1';
+const BIO_CRED_KEY='gastei_bio_cred_v1';
+
+function strToUint8(str){
+  return new TextEncoder().encode(str);
+}
+function b64ToUint8(b64){
+  const bin=atob(b64);const arr=new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++)arr[i]=bin.charCodeAt(i);return arr;
+}
+function uint8ToB64(arr){
+  return btoa(String.fromCharCode(...new Uint8Array(arr)));
+}
+
+async function isBioAvailable(){
+  if(!window.PublicKeyCredential)return false;
+  try{return await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();}
+  catch(e){return false;}
+}
+
+async function registerBio(){
+  if(!(await isBioAvailable())){alert('Face ID/Touch ID não disponível neste dispositivo.');return false;}
   try{
-    // Use credential get as biometric check (simplified)
-    const result=await navigator.credentials.get({
-      publicKey:{
-        challenge:new Uint8Array(32),
-        timeout:60000,
-        userVerification:'required'
-      }
-    });
-    if(result)hidePinOverlay();
+    const challenge=crypto.getRandomValues(new Uint8Array(32));
+    const cred=await navigator.credentials.create({publicKey:{
+      challenge,
+      rp:{name:'Gastei',id:location.hostname},
+      user:{id:strToUint8('gastei-user'),name:'kaio',displayName:'Kaio'},
+      pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],
+      authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required'},
+      timeout:60000
+    }});
+    if(cred){
+      localStorage.setItem(BIO_CRED_KEY,JSON.stringify({id:uint8ToB64(cred.rawId)}));
+      localStorage.setItem(BIO_KEY,'1');
+      return true;
+    }
+  }catch(e){console.warn('Registro bio falhou:',e);}
+  return false;
+}
+
+async function pinBio(){
+  if(!(await isBioAvailable()))return;
+  const stored=localStorage.getItem(BIO_CRED_KEY);
+  // Se não tem credencial registrada, registra agora
+  if(!stored){
+    const label=document.getElementById('pin-label');
+    if(label)label.textContent='Cadastrando Face ID...';
+    const ok=await registerBio();
+    if(ok){
+      hidePinOverlay();
+      // Pergunta se quer usar bio sempre
+      setTimeout(()=>{
+        if(confirm('✅ Face ID cadastrado!\nUsar Face ID para abrir o app sempre?')){
+          localStorage.setItem(BIO_KEY,'1');
+        }
+      },300);
+    } else {
+      const label=document.getElementById('pin-label');
+      if(label)label.textContent='Digite seu PIN';
+    }
+    return;
+  }
+  // Autentica com credencial existente
+  try{
+    const credData=JSON.parse(stored);
+    const challenge=crypto.getRandomValues(new Uint8Array(32));
+    const assertion=await navigator.credentials.get({publicKey:{
+      challenge,
+      timeout:60000,
+      rpId:location.hostname,
+      allowCredentials:[{type:'public-key',id:b64ToUint8(credData.id)}],
+      userVerification:'required'
+    }});
+    if(assertion)hidePinOverlay();
   }catch(e){
-    // Biometric failed or not available, stay on PIN
+    console.warn('Bio auth falhou:',e);
+    const label=document.getElementById('pin-label');
+    if(label){label.textContent='Use o PIN';label.style.color='var(--text2)';}
+  }
+}
+
+async function initBioBtn(){
+  const bioBtn=document.getElementById('pin-bio-btn');
+  if(!bioBtn)return;
+  const avail=await isBioAvailable();
+  if(!avail){bioBtn.style.display='none';return;}
+  // Ícone: Face ID se iOS, impressão digital caso contrário
+  const isIOS=/iPhone|iPad/.test(navigator.userAgent);
+  bioBtn.textContent=isIOS?'󾓦':'🔐';
+  bioBtn.style.display='flex';
+  // Auto-trigger biometria se já tem cadastrado
+  if(localStorage.getItem(BIO_KEY)==='1'&&localStorage.getItem(BIO_CRED_KEY)){
+    setTimeout(pinBio,400);
   }
 }
 
 function pinSkip(){hidePinOverlay();}
 
-function configurarPin(){showPinOverlay('set');}
+function configurarPin(){
+  isBioAvailable().then(avail=>{
+    if(avail){
+      const hasBio=localStorage.getItem(BIO_KEY)==='1';
+      const msg=hasBio
+        ?'O que deseja fazer?\n1 - Reconfigurar PIN\n2 - Reconfigurar Face ID\n3 - Ambos'
+        :'O que deseja configurar?\n1 - PIN\n2 - Face ID\n3 - Ambos';
+      const choice=prompt(msg);
+      if(choice==='2'||choice==='3'){
+        localStorage.removeItem(BIO_CRED_KEY);
+        localStorage.removeItem(BIO_KEY);
+        registerBio().then(ok=>{
+          if(ok){localStorage.setItem(BIO_KEY,'1');alert('✅ Face ID configurado!');}
+        });
+      }
+      if(choice==='1'||choice==='3')showPinOverlay('set');
+    } else {
+      showPinOverlay('set');
+    }
+  });
+}
 
 // ===== VOICE CONFIRM =====
 let voiceConfirmType='saida';
@@ -3540,6 +3645,13 @@ function showPage(name){
 }
 
 // ===== BOOT =====
+// Bloqueia visualmente antes de qualquer render
+(function(){
+  const hasPIN=localStorage.getItem('gastei_pin_v1');
+  if(hasPIN){
+    document.querySelectorAll('.page,.nav').forEach(el=>el.style.visibility='hidden');
+  }
+})();
 load();
 renderFuturo();
 renderQuickCats();
