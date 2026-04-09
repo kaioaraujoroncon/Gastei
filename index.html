@@ -915,11 +915,18 @@ select.setting-input{text-align:left;cursor:pointer;}
     <button class="pin-btn" onclick="pinInput('7')">7</button>
     <button class="pin-btn" onclick="pinInput('8')">8</button>
     <button class="pin-btn" onclick="pinInput('9')">9</button>
-    <button class="pin-btn" onclick="pinBio()" id="pin-bio-btn" style="font-size:22px;display:none">🔐</button>
+    <button class="pin-btn" onclick="pinBio()" id="pin-bio-btn" style="display:none;align-items:center;justify-content:center">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M7 3H5a2 2 0 00-2 2v2M17 3h2a2 2 0 012 2v2M7 21H5a2 2 0 01-2-2v-2M17 21h2a2 2 0 002-2v-2"/>
+      <circle cx="12" cy="12" r="1"/>
+      <path d="M9 9a3 3 0 016 0v1a6 6 0 01-1.5 4"/>
+      <path d="M9 12v1a3 3 0 005.5 1.6"/>
+    </svg>
+  </button>
     <button class="pin-btn" onclick="pinInput('0')">0</button>
     <button class="pin-btn" onclick="pinDelete()" style="font-size:18px">⌫</button>
   </div>
-  <button onclick="pinSkip()" style="margin-top:24px;background:none;color:var(--text3);font-size:13px;cursor:pointer;font-family:inherit">Pular por agora</button>
+
 </div>
 
 <!-- VOICE CONFIRM MODAL -->
@@ -1019,7 +1026,12 @@ async function sbSync(table,data){
     } else if(table==='recurrents'){
       await sb.from('recurrents').upsert({id:'main',data});
     } else if(table==='contas'){
-      await sb.from('contas').upsert({id:'main',data});
+      // Contas tem estrutura diferente — salva cada conta como linha
+      if(Array.isArray(data)){
+        await sb.from('contas').delete().neq('nome','__placeholder__');
+        const rows=data.map(nome=>({nome}));
+        if(rows.length>0)await sb.from('contas').insert(rows);
+      }
     } else if(table==='pagamentos'){
       await sb.from('pagamentos').upsert({id:'main',data});
     } else if(table==='avulsos'){
@@ -1049,27 +1061,30 @@ async function sbLoad(){
       localStorage.setItem(KEY,JSON.stringify(expenses));
     }
     // Config e demais tabelas
-    const tbls=[
-      {t:'recurrents',k:'recurrents',v:recurrents},
-      {t:'contas',k:'contas',v:contas},
-      {t:'pagamentos',k:'pagamentos',v:pagamentos},
-      {t:'avulsos',k:'avulsos',v:avulsos},
-      {t:'sazonais',k:'sazonais',v:sazonais},
-      {t:'fat_hist',k:'fat_hist',v:fatHist},
+    // Carrega tabelas JSONB simples
+    const jsonTbls=[
+      {t:'recurrents',setter:d=>{recurrents=d;}},
+      {t:'pagamentos',setter:d=>{pagamentos=d;}},
+      {t:'avulsos',setter:d=>{avulsos=d;}},
+      {t:'sazonais',setter:d=>{sazonais=d;}},
+      {t:'fat_hist',setter:d=>{fatHist=d;}},
     ];
-    for(const{t,k}of tbls){
-      const{data:d}=await sb.from(t).select('data').eq('id','main').single();
-      if(d&&d.data){
-        if(k==='recurrents')recurrents=d.data;
-        else if(k==='contas')contas=d.data;
-        else if(k==='pagamentos')pagamentos=d.data;
-        else if(k==='avulsos')avulsos=d.data;
-        else if(k==='sazonais')sazonais=d.data;
-        else if(k==='fat_hist')fatHist=d.data;
-      }
+    for(const{t,setter}of jsonTbls){
+      try{
+        const{data:d,error}=await sb.from(t).select('data').eq('id','main').maybeSingle();
+        if(!error&&d&&d.data)setter(d.data);
+      }catch(e){}
     }
-    const{data:cfgData}=await sb.from('config').select('data').eq('id',1).single();
-    if(cfgData&&cfgData.data)cfg={...cfg,...cfgData.data};
+    // Contas — tabela com nome único
+    try{
+      const{data:ctData}=await sb.from('contas').select('nome');
+      if(ctData&&ctData.length>0)contas=ctData.map(r=>r.nome);
+    }catch(e){}
+    // Config
+    try{
+      const{data:cfgData}=await sb.from('config').select('data').eq('id',1).maybeSingle();
+      if(cfgData&&cfgData.data)cfg={...cfg,...cfgData.data};
+    }catch(e){}
     console.log('✅ Dados carregados do Supabase');
     return true;
   }catch(e){console.warn('sbLoad erro:',e);return false;}
@@ -1604,6 +1619,8 @@ function initPin(){
   const btn=document.getElementById('pin-cfg-btn');
   if(btn)btn.textContent=stored?'Alterar':'Configurar';
   if(!stored)return; // sem PIN, libera
+  // Se já autenticou nessa sessão, não pede de novo
+  if(sessionStorage.getItem('gastei_auth')==='1')return;
   // Esconde todo o conteúdo até autenticar
   document.querySelectorAll('.page,.nav').forEach(el=>el.style.visibility='hidden');
   showPinOverlay('unlock');
@@ -1628,6 +1645,8 @@ function hidePinOverlay(){
   document.getElementById('pin-overlay').classList.remove('visible');
   // Mostra conteúdo após autenticação
   document.querySelectorAll('.page,.nav').forEach(el=>el.style.visibility='');
+  // Salva sessão para não pedir de novo na mesma sessão
+  sessionStorage.setItem('gastei_auth','1');
 }
 
 function updatePinDots(){
@@ -1780,12 +1799,10 @@ async function initBioBtn(){
   const avail=await isBioAvailable();
   if(!avail){bioBtn.style.display='none';return;}
   // Ícone: Face ID se iOS, impressão digital caso contrário
-  const isIOS=/iPhone|iPad/.test(navigator.userAgent);
-  bioBtn.textContent=isIOS?'󾓦':'🔐';
   bioBtn.style.display='flex';
   // Auto-trigger biometria se já tem cadastrado
   if(localStorage.getItem(BIO_KEY)==='1'&&localStorage.getItem(BIO_CRED_KEY)){
-    setTimeout(pinBio,400);
+    setTimeout(pinBio,600);
   }
 }
 
@@ -3657,7 +3674,8 @@ function showPage(name){
 // Bloqueia visualmente antes de qualquer render
 (function(){
   const hasPIN=localStorage.getItem('gastei_pin_v1');
-  if(hasPIN){
+  const jaAutenticou=sessionStorage.getItem('gastei_auth')==='1';
+  if(hasPIN&&!jaAutenticou){
     document.querySelectorAll('.page,.nav').forEach(el=>el.style.visibility='hidden');
   }
 })();
