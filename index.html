@@ -1821,7 +1821,14 @@ function sendMsg(tipo='saida'){
 }
 
 function clearAll(){if(!confirm('Apagar todos os lançamentos?'))return;if(!confirm('⚠️ CONFIRMAÇÃO FINAL\n\nEssa ação é irreversível. Todos os seus dados serão apagados permanentemente.\n\nTem certeza absoluta?'))return;expenses=[];save();renderAll();renderFuturo();}
-function deleteExpense(id){expenses=expenses.filter(e=>e.id!==id);save();renderAll();renderFuturo();}
+function deleteExpense(id){
+  // Comparação flexível para IDs antigos (número) e novos (string)
+  expenses=expenses.filter(e=>String(e.id)!==String(id));
+  save();
+  // Remove do Supabase também
+  if(sb)sb.from('expenses').delete().eq('id',String(id)).then(()=>{}).catch(()=>{});
+  renderAll();renderFuturo();
+}
 
 // ===== EDIT =====
 function openEdit(id){
